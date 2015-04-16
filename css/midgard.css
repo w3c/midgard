@@ -69,6 +69,8 @@
 */
 body {
     font-family:    "Source Sans";
+/*    background: url("/img/honeycomb.svg") #343434;*/
+    background: #343434;
 }
 
 
@@ -79,6 +81,7 @@ header {
     text-align: right;
     background: url("/img/criss-cross.svg") darkorange;
     line-height:    0;
+    border-bottom:  3px solid oldlace;
 }
 header img {
     padding: 5px 10px;

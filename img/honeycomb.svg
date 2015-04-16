@@ -1,0 +1,12 @@
+<svg width="35" height="35" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140">
+  <defs>
+    <pattern id="pdhyn" patternUnits="userSpaceOnUse" width="24" height="13.856406460551018">
+      <path d="M 8,0 l 8,0 l 4,6.928203230275509
+                l -4,6.928203230275509 l -8,0
+                l -4,-6.928203230275509 Z M 0,6.928203230275509
+                l 4,0 M 24,6.928203230275509 l -4,0" fill="transparent" stroke-width="1"
+                shape-rendering="auto" stroke="grey" stroke-linecap="square"/>
+    </pattern>
+  </defs>
+  <path d="M 0 0 L 0 140 L 140 140 L 140 0 Z" fill="url('#pdhyn')"/>
+</svg>
