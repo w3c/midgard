@@ -1,0 +1,11 @@
+<svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140">
+  <defs>
+    <pattern id="vesbz" patternUnits="userSpaceOnUse" width="10" height="10">
+      <path d="M 2.5,2.5l5,5M7.5,2.5l5,-5
+              M2.5,7.5l-5,5M7.5,12.5l5,-5
+              M-2.5,2.5l5,-5" fill="transparent" stroke-width="1" shape-rendering="auto"
+              stroke="#343434" stroke-linecap="square"/>
+    </pattern>
+  </defs>
+  <path d="M 0 0 L 0 140 L 140 140 L 140 0 Z" fill="url('#vesbz')"/>
+</svg>
