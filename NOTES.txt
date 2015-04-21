@@ -3,13 +3,13 @@ TODO:
     ✓ load _
     ✓ load BB
     ✓ set up sync handler
-    - write server endpoint
+    ✓ write server endpoint
     - expose locally, too (at pheme.bast)
         - this needs to be configurable
 
 
 LOAD:
-    - #fetch user
+    ✓ #fetch user
 
 LOGIN:
     - load specific layout with just one widget
@@ -17,7 +17,7 @@ LOGIN:
     - if successful, go to fetch user
 
 FETCH USER:
-    - /api/user
+    ✓ /api/user
     - if none: #login
     - get layout
     - if none: default layout
