@@ -1,6 +1,10 @@
-/* globals Backbone, Midgard */
 
-Midgard.User = Backbone.Model.extend({
+var Backbone = require("backbone")
+,   Midgard = require("./midgard")
+,   $ = require("jquery")
+;
+
+module.exports = Backbone.Model.extend({
     defaults:   {
         id:     null
     ,   acl:    "public"

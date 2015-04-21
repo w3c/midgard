@@ -2,6 +2,9 @@
 var _ = require("underscore")
 ,   Backbone = require("backbone")
 ,   $ = require("jquery")
+,   User = require("./user")
+,   Layout = require("./layout")
+,   LayoutView = require("./layout-view")
 ;
 
 var Midgard = {
@@ -14,14 +17,14 @@ _.extend(Midgard, Backbone.Events);
 // loading
 $(function () {
     // load up user
-    Midgard.user = new Midgard.User();
+    Midgard.user = new User();
     Midgard.user.fetch({
         success:    function () { Midgard.trigger("user-loaded"); }
     ,   error:      function () { Midgard.trigger("no-user"); }
     });
     // layout
-    Midgard.layout = new Midgard.Layout();
-    Midgard.rootView = new Midgard.LayoutView({
+    Midgard.layout = new Layout();
+    Midgard.rootView = new LayoutView({
         model:  Midgard.layout
     ,   el:     document.querySelector("main")
     });
@@ -35,6 +38,5 @@ Midgard.on("no-user", function () {
 // layout
 // on("user-loaded") -> get layout preferences and paint them
 // on("login-failed") -> show login with error
-
 
 module.exports = Midgard;
