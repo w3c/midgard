@@ -5,16 +5,16 @@
   "license": "MIT",
   "dependencies": {
     "backbone": "^1.1.2",
+    "handlebars": "^3.0.2",
+    "hbsfy": "^2.2.1",
     "jquery": "^2.1.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "brfs": "^1.4.0",
     "browserify": "^9.0.8",
-    "swig": "^1.4.2",
     "watchify": "^3.1.2"
   },
   "scripts": {
-    "watch": "watchify js/midgard.js -t brfs -o js/midgard.min.js -d --verbose"
+    "watch": "watchify js/midgard.js -t hbsfy -o js/midgard.min.js -d --verbose"
   }
 }

@@ -1,9 +1,8 @@
-var fs = require("fs");
+
 var _ = require("underscore")
 ,   $ = require("jquery")
-,   swig = require("swig")
-,   jn = require("path").join
-,   form = swig.compile(fs.readFileSync(jn(__dirname, "login.html"), "utf8"))
+,   form = require("./login.hbs")
+,   Midgard = require("../../js/midgard")
 ;
 
 function Login (opt) {
@@ -12,7 +11,14 @@ function Login (opt) {
 }
 Login.prototype = {
     render: function () {
-        this.$parent.html(form({}));
+        this.$parent
+            .html(form({}))
+            .find("form")
+            .submit(function () {
+                Midgard.user.login($("#login-id").val(), $("#login-password").val());
+                return false;
+            })
+        ;
         // on submit, event a login attempt
         // register for login failure notifications
     }

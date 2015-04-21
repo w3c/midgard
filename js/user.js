@@ -12,12 +12,21 @@ module.exports = Backbone.Model.extend({
     }
 ,   sync:       function (method, model, options) {
         if (method === "read") {
-            $.getJSON(endpoints.user, function (data) {
-                if (data.found) {
-                    model.set(data._source);
-                    options.success();
+            $.ajax(endpoints.user, {
+                method: "GET"
+            ,   xhrFields: {
+                    withCredentials: true
                 }
-                else options.error(data.error);
+            ,   success:    function (data) {
+                    if (data.found) {
+                        model.set(data._source);
+                        options.success();
+                    }
+                    else options.error(data.error);
+                }
+            ,   error:      function (err) {
+                    options.error(err);
+                }
             });
         }
         else if (method === "update") {
@@ -25,11 +34,16 @@ module.exports = Backbone.Model.extend({
         }
     }
 ,   login:      function (id, password) {
+        console.log("Logging in " + id);
         var user = this;
         $.ajax(endpoints.user, {
             data:   { id: id, password: password }
         ,   method: "POST"
+        ,   xhrFields: {
+                withCredentials: true
+            }
         ,   success:    function (data) {
+                console.log("success", data);
                 if (data.found) {
                     user.set(data._source);
                     Midgard.trigger("user-loaded");
@@ -37,6 +51,7 @@ module.exports = Backbone.Model.extend({
                 else Midgard.trigger("login-fail");
             }
         ,   error:      function () {
+                console.log("error");
                 Midgard.trigger("login-fail");
             }
         });
@@ -45,6 +60,9 @@ module.exports = Backbone.Model.extend({
         var user = this;
         $.ajax(endpoints.user, {
             method: "DELETE"
+        ,   xhrFields: {
+                withCredentials: true
+            }
         ,   success:    function () {
                 user.clear();
                 Midgard.trigger("logout");

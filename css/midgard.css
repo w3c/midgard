@@ -117,3 +117,18 @@ main {
     padding:    0 10px 10px 10px;
 }
 
+/*
+    ---- FORMS -------------------------------------------------------------------------------------
+*/
+.content label {
+    display:    block;
+}
+.content input[type=text], .content input[type=password] {
+    display:    block;
+    width:  95%;
+    margin-bottom:  10px;
+}
+.content .action {
+    width:  95%;
+    text-align: right;
+}
