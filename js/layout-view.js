@@ -4,6 +4,7 @@ var _ = require("underscore")
 ,   $ = require("jquery")
 ,   Midgard = require("./midgard")
 ;
+Backbone.$ = $;
 
 var LayoutView = Backbone.View.extend({
     initialize: function() {

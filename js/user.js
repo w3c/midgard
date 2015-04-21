@@ -1,8 +1,10 @@
 
 var Backbone = require("backbone")
 ,   Midgard = require("./midgard")
+,   endpoints = require("./endpoints")
 ,   $ = require("jquery")
 ;
+Backbone.$ = $;
 
 module.exports = Backbone.Model.extend({
     defaults:   {
@@ -11,7 +13,7 @@ module.exports = Backbone.Model.extend({
     }
 ,   sync:       function (method, model, options) {
         if (method === "read") {
-            $.getJSON("/api/user", function (data) {
+            $.getJSON(endpoints.user, function (data) {
                 if (data.found) {
                     model.set(data._source);
                     options.success();
@@ -25,7 +27,7 @@ module.exports = Backbone.Model.extend({
     }
 ,   login:      function (id, password) {
         var user = this;
-        $.ajax("/api/user", {
+        $.ajax(endpoints.user, {
             data:   { id: id, password: password }
         ,   method: "POST"
         ,   success:    function (data) {
@@ -42,7 +44,7 @@ module.exports = Backbone.Model.extend({
     }
 ,   logout:     function () {
         var user = this;
-        $.ajax("/api/user", {
+        $.ajax(endpoints.user, {
             method: "DELETE"
         ,   success:    function () {
                 user.clear();

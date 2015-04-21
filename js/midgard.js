@@ -6,6 +6,7 @@ var _ = require("underscore")
 ,   Layout = require("./layout")
 ,   LayoutView = require("./layout-view")
 ;
+Backbone.$ = $;
 
 var Midgard = {
     user:       null
