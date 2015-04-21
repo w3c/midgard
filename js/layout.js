@@ -1,9 +1,7 @@
 
-var Backbone = require("backbone")
-,   Midgard = require("./midgard")
-;
+var Backbone = require("backbone");
 
-Midgard.Layout = Backbone.Model.extend({
+var Layout = Backbone.Model.extend({
     defaults:   {
         left:   null
     ,   centre: null
@@ -28,3 +26,4 @@ Midgard.Layout = Backbone.Model.extend({
         });
     }
 });
+module.exports = Layout;

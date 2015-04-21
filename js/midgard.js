@@ -10,7 +10,9 @@ var _ = require("underscore")
 var Midgard = {
     user:       null
 ,   layout:     null
-,   widgets:    {}
+,   widgets:    {
+        login:  require("../widgets/login")
+    }
 };
 _.extend(Midgard, Backbone.Events);
 
