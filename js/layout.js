@@ -20,6 +20,7 @@ var Layout = Backbone.Model.extend({
             left:   null
         ,   centre: [{
                 id:     "login"
+            ,   title:  "Login"
             ,   data:   {}
             }]
         ,   right:  null

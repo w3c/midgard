@@ -29,7 +29,7 @@ var LayoutView = Backbone.View.extend({
         this.$el.empty();
         this.columns.forEach(function (col) {
             var $column = $("<div></div>")
-                            .addClass("column")
+                            .addClass("col-xs-4")
                             .addClass(col)
                             .appendTo(this.$el)
             ;
@@ -37,14 +37,17 @@ var LayoutView = Backbone.View.extend({
                 this.model.get(col).forEach(function (widget) {
                     var $w = $("<div></div>")
                                 .addClass("widget")
+                                .addClass("box-row")
                                 .appendTo($column)
                     ,   wid = this.nextID()
                     ;
+                    $("<h2></h2>").html(widget.title).appendTo($w);
+                    var $parent = $("<div></div>").addClass("content").appendTo($w);
                     $w.attr("data-wid", wid);
                     this.instances[wid] = Midgard.createWidget(widget.id, {
                                                 wid:        wid
                                             ,   data:       widget.data
-                                            ,   $parent:    $w
+                                            ,   $parent:    $parent
                     });
                 }.bind(this));
             }

@@ -87,3 +87,33 @@ header img {
     padding: 5px 10px;
     background: #343434;
 }
+
+/*
+    ---- COLUMNS -----------------------------------------------------------------------------------
+*/
+main {
+    padding-top:    1rem;
+}
+.row {
+    margin-right:   0;
+}
+
+/*
+    ---- WIDGETS -----------------------------------------------------------------------------------
+*/
+.widget {
+    background: #fff;
+    border: 1px solid oldlace;
+}
+.widget h2 {
+    font-weight:    normal;
+    padding:    5px 10px 0 10px;
+    margin: 0 0 10px 0;
+    border-bottom:  1px solid darkorange;
+}
+.widget .content {
+    height: 400px;
+    overflow:   auto;
+    padding:    0 10px 10px 10px;
+}
+
