@@ -4,7 +4,6 @@ var _ = require("underscore")
 ,   $ = require("jquery")
 ,   Midgard = require("./midgard")
 ;
-Backbone.$ = $;
 
 var LayoutView = Backbone.View.extend({
     initialize: function() {
@@ -39,16 +38,15 @@ var LayoutView = Backbone.View.extend({
                     var $w = $("<div></div>")
                                 .addClass("widget")
                                 .appendTo($column)
-                    ,   Widget = Midgard.widgets[widget.id]
                     ,   wid = this.nextID()
                     ;
                     $w.attr("data-wid", wid);
-                    this.instances[wid] = new Widget({
+                    this.instances[wid] = Midgard.createWidget(widget.id, {
                                                 wid:        wid
                                             ,   data:       widget.data
                                             ,   $parent:    $w
                     });
-                });
+                }.bind(this));
             }
         }.bind(this));
     }

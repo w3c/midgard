@@ -4,7 +4,6 @@ var Backbone = require("backbone")
 ,   endpoints = require("./endpoints")
 ,   $ = require("jquery")
 ;
-Backbone.$ = $;
 
 module.exports = Backbone.Model.extend({
     defaults:   {

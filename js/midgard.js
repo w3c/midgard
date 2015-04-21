@@ -8,12 +8,14 @@ var _ = require("underscore")
 ;
 Backbone.$ = $;
 
-var Midgard = {
-    user:       null
-,   layout:     null
-,   widgets:    {
-        login:  require("../widgets/login")
-    }
+var Midgard = exports;
+Midgard.user = null;
+Midgard.layout = null;
+Midgard.widgets = {
+    login:  require("../widgets/login")
+};
+Midgard.createWidget = function (id, opt) {
+    return new this.widgets[id](opt);
 };
 _.extend(Midgard, Backbone.Events);
 
@@ -41,5 +43,3 @@ Midgard.on("no-user", function () {
 // layout
 // on("user-loaded") -> get layout preferences and paint them
 // on("login-failed") -> show login with error
-
-module.exports = Midgard;
