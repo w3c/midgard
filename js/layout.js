@@ -1,4 +1,4 @@
-/* globals Backbone, Midgard */
+/* globals Backbone, Midgard, _ */
 
 Midgard.Layout = Backbone.Model.extend({
     defaults:   {
@@ -36,10 +36,17 @@ Midgard.LayoutView = Backbone.View.extend({
         return ++this.currentID;
     }
 ,   instances:  {}
+,   reset:  function () {
+        _.keys(this.instances, function (k) {
+            this.instances[k].remove();
+            delete this.instances[k];
+        }.bind(this));
+    }
     // render brutally re-renders everything
     // we need to be careful with model changes due to drag-and-drop (removals, etc.) that they
     // don't trigger a complete re-render (make them silent)
 ,   render: function () {
+        this.reset();
         this.$el.empty();
         this.columns.forEach(function (col) {
             var $column = $("<div></div>")
@@ -55,10 +62,11 @@ Midgard.LayoutView = Backbone.View.extend({
                     ,   Widget = Midgard.widgets[widget.id]
                     ,   wid = this.nextID()
                     ;
+                    $w.attr("data-wid", wid);
                     this.instances[wid] = new Widget({
-                                                wid:    wid
-                                            ,   data:   widget.data
-                                            ,   $el:    $w
+                                                wid:        wid
+                                            ,   data:       widget.data
+                                            ,   $parent:    $w
                     });
                 });
             }

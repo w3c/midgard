@@ -1,7 +1,9 @@
 /* globals _, Backbone */
 
 var Midgard = {
-    user:   null
+    user:       null
+,   layout:     null
+,   widgets:    {}
 };
 _.extend(Midgard, Backbone.Events);
 
