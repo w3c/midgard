@@ -1,4 +1,9 @@
-/* globals Backbone, Midgard, _ */
+
+var _ = require("underscore")
+,   Backbone = require("backbone")
+,   $ = require("jquery")
+,   Midgard = require("./midgard")
+;
 
 Midgard.Layout = Backbone.Model.extend({
     defaults:   {

@@ -1,4 +1,7 @@
-/* globals Midgard, _ */
+var _ = require("underscore")
+// ,   $ = require("jquery")
+,   Midgard = require("./midgard")
+;
 
 Midgard.widgets.login = function (opt) {
     _.extend(this, opt);

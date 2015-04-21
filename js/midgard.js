@@ -1,4 +1,8 @@
-/* globals _, Backbone */
+
+var _ = require("underscore")
+,   Backbone = require("backbone")
+,   $ = require("jquery")
+;
 
 var Midgard = {
     user:       null
@@ -32,3 +36,5 @@ Midgard.on("no-user", function () {
 // on("user-loaded") -> get layout preferences and paint them
 // on("login-failed") -> show login with error
 
+
+module.exports = Midgard;
