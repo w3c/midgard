@@ -1,45 +1,24 @@
 
-var _ = require("underscore")
-,   Backbone = require("backbone")
+var Backbone = require("backbone")
 ,   $ = require("jquery")
 ,   User = require("./user")
-,   Layout = require("./layout")
 ,   LayoutView = require("./layout-view")
+,   WidgetView = require("./widget-view")
+    // application state
+,   user = new User()
+,   WV = new WidgetView()
+,   layout
 ;
 Backbone.$ = $;
 
-var Midgard = exports;
-Midgard.user = null;
-Midgard.layout = null;
-Midgard.widgets = {
-    login:  require("../widgets/login")
-};
-Midgard.createWidget = function (id, opt) {
-    return new this.widgets[id](opt);
-};
-_.extend(Midgard, Backbone.Events);
+// register widgets
+WV.registerWidget("login", require("../widgets/login"));
 
-// loading
+// initialisation
 $(function () {
-    // load up user
-    Midgard.user = new User();
-    Midgard.user.fetch({
-        success:    function () { Midgard.trigger("user-loaded"); }
-    ,   error:      function () { Midgard.trigger("no-user"); }
-    });
+    // load up the user
+    user.fetch();
     // layout
-    Midgard.layout = new Layout();
-    Midgard.rootView = new LayoutView({
-        model:  Midgard.layout
-    ,   el:     document.querySelector("main")
-    });
+    layout = new LayoutView({ user: user, el: document.querySelector("main") });
+    layout.render();
 });
-
-// there is no user, show default layout
-Midgard.on("no-user", function () {
-    Midgard.layout.defaultToLogin();
-});
-
-// layout
-// on("user-loaded") -> get layout preferences and paint them
-// on("login-failed") -> show login with error

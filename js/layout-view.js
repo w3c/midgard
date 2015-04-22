@@ -2,14 +2,31 @@
 var _ = require("underscore")
 ,   Backbone = require("backbone")
 ,   $ = require("jquery")
-,   Midgard = require("./midgard")
+,   WidgetView = require("./widget-view")
 ;
 
+// XXX
+//  need to handle the navigation bar
+
 var LayoutView = Backbone.View.extend({
-    initialize: function() {
-        this.listenTo(this.model, "change", this.render);
+    initialize: function (opt) {
+        this.user = opt.user;
+
+        // handle user-related changes
+        if (!this.user.isLoggedIn()) this.renderLogin();
+        this.user.on("session-loaded", this.render.bind(this));
+        this.user.on("login", this.render.bind(this));
+        this.user.on("logout", this.renderLogin.bind(this));
+        this.user.on("login-fail", function () {
+            this.error("Login failure", "Please check your login/password combination.");
+        }.bind(this));
     }
 ,   columns:    ["left", "centre", "right"]
+,   widgets:    {
+        left:   null
+    ,   centre: null
+    ,   right:  null
+    }
 ,   currentID:  0
 ,   nextID: function () {
         return ++this.currentID;
@@ -17,9 +34,40 @@ var LayoutView = Backbone.View.extend({
 ,   instances:  {}
 ,   reset:  function () {
         _.keys(this.instances, function (k) {
-            this.instances[k].remove();
+            this.instances[k].remove(); // XXX this needs to remove() the WidgetView itself, not the element
             delete this.instances[k];
         }.bind(this));
+    }
+,   message:    function (style, title, content) {
+        var $content = $("<div></div>").addClass("content").html(content)
+        ,   $close = $("<button>╳</button>")
+                            .click(function (ev) {
+                                $(ev.target.parentNode).remove();
+                            })
+        ;
+        return $("<div><h3></h3></div>")
+                    .addClass("message")
+                    .addClass(style)
+                    .append($close)
+                    .find("h3").html(title).end()
+                    .append($content)
+                    .appendTo(this.$el)
+        ;
+    }
+,   error:  function (title, content) {
+        title = title || "Error";
+        return this.message("error", title, content);
+    }
+    // special rendering for the login screen that just removes everything
+,   renderLogin:    function () {
+        this.widgets = {
+            left:   null
+        ,   centre: [
+                { id: "login" }
+            ]
+        ,   right:  null
+        };
+        this.render();
     }
     // render brutally re-renders everything
     // we need to be careful with model changes due to drag-and-drop (removals, etc.) that they
@@ -35,6 +83,7 @@ var LayoutView = Backbone.View.extend({
             ;
             if (this.model.has(col)) {
                 this.model.get(col).forEach(function (widget) {
+                    // we render a box in which the widget can render itself
                     var $w = $("<div></div>")
                                 .addClass("widget")
                                 .addClass("box-row")
@@ -44,14 +93,21 @@ var LayoutView = Backbone.View.extend({
                     $("<h2></h2>").html(widget.title).appendTo($w);
                     var $parent = $("<div></div>").addClass("content").appendTo($w);
                     $w.attr("data-wid", wid);
-                    this.instances[wid] = Midgard.createWidget(widget.id, {
-                                                wid:        wid
-                                            ,   data:       widget.data
-                                            ,   $parent:    $parent
+                    this.instances[wid] = new WidgetView(widget.id, {
+                                                data:       widget.data
+                                            ,   el:         $parent[0]
+                                            ,   parentView: this
                     });
+                    this.installListeners(this.instances[wid]);
                 }.bind(this));
             }
         }.bind(this));
+    }
+    // this is where we handle all events that can come from widgets
+,   installListeners:   function (widget) {
+        widget.on("login-attempt", function (id, password) {
+            this.user.login(id, password);
+        });
     }
 });
 

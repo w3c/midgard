@@ -1,26 +1,23 @@
 
-var _ = require("underscore")
-,   $ = require("jquery")
+var $ = require("jquery")
 ,   form = require("./login.hbs")
-,   Midgard = require("../../js/midgard")
+,   WidgetView = require("../../js/widget-view")
 ;
 
-function Login (opt) {
-    _.extend(this, opt);
-    this.render();
-}
-Login.prototype = {
-    render: function () {
+var Login = WidgetView.extend({
+    initialise: function (data) {
+        this.parentView = data.parentView;
+    }
+,   render: function () {
         this.$parent
             .html(form({}))
             .find("form")
             .submit(function () {
-                Midgard.user.login($("#login-id").val(), $("#login-password").val());
+                this.trigger("login-attempt", $("#login-id").val(), $("#login-password").val());
                 return false;
             })
         ;
-        // on submit, event a login attempt
-        // register for login failure notifications
     }
-};
+});
+
 module.exports = Login;
