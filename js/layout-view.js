@@ -13,9 +13,8 @@ var LayoutView = Backbone.View.extend({
         this.user = opt.user;
 
         // handle user-related changes
-        if (!this.user.isLoggedIn()) this.renderLogin();
-        this.user.on("session-loaded", this.render.bind(this));
-        this.user.on("login", this.render.bind(this));
+        this.user.on("session-loaded", this.renderForUser.bind(this));
+        this.user.on("login", this.renderForUser.bind(this));
         this.user.on("logout", this.renderLogin.bind(this));
         this.user.on("login-fail", function () {
             this.error("Login failure", "Please check your login/password combination.");
@@ -60,13 +59,32 @@ var LayoutView = Backbone.View.extend({
     }
     // special rendering for the login screen that just removes everything
 ,   renderLogin:    function () {
+        var w = this.widgets;
+        if (w.left === null && w.right === null &&
+            w.centre && w.centre.length === 1 && w.centre[0].id === "login") return;
         this.widgets = {
             left:   null
         ,   centre: [
-                { id: "login" }
+                { id: "login", title: "Login" }
             ]
         ,   right:  null
         };
+        this.render();
+    }
+    // the default set of widgets for users who haven't customised anything
+,   renderDefault:  function () {
+        // XXX make this actually useful
+        this.widgets = {
+            left:   null
+        ,   centre: null
+        ,   right:  null
+        };
+        this.render();
+    }
+    // render customised per user
+,   renderForUser:  function () {
+        if (!this.user.layout) return this.renderDefault();
+        this.widgets = this.user.layout;
         this.render();
     }
     // render brutally re-renders everything
@@ -81,8 +99,8 @@ var LayoutView = Backbone.View.extend({
                             .addClass(col)
                             .appendTo(this.$el)
             ;
-            if (this.model.has(col)) {
-                this.model.get(col).forEach(function (widget) {
+            if (this.widgets[col]) {
+                this.widgets[col].forEach(function (widget) {
                     // we render a box in which the widget can render itself
                     var $w = $("<div></div>")
                                 .addClass("widget")
@@ -93,12 +111,13 @@ var LayoutView = Backbone.View.extend({
                     $("<h2></h2>").html(widget.title).appendTo($w);
                     var $parent = $("<div></div>").addClass("content").appendTo($w);
                     $w.attr("data-wid", wid);
-                    this.instances[wid] = new WidgetView(widget.id, {
+                    this.instances[wid] = WidgetView.createWidget(widget.id, {
                                                 data:       widget.data
                                             ,   el:         $parent[0]
                                             ,   parentView: this
                     });
                     this.installListeners(this.instances[wid]);
+                    this.instances[wid].render();
                 }.bind(this));
             }
         }.bind(this));

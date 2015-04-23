@@ -9,7 +9,7 @@ var Login = WidgetView.extend({
         this.parentView = data.parentView;
     }
 ,   render: function () {
-        this.$parent
+        this.$el
             .html(form({}))
             .find("form")
             .submit(function () {

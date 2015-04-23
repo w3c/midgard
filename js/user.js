@@ -1,6 +1,5 @@
 
 var Backbone = require("backbone")
-,   Midgard = require("./midgard")
 ,   endpoints = require("./endpoints")
 ,   $ = require("jquery")
 ;
@@ -34,13 +33,13 @@ module.exports = Backbone.Model.extend({
             ,   success:    function (data) {
                     if (data.found) {
                         model.set(data._source);
-                        this.trigger("session-loaded");
+                        return this.trigger("session-loaded");
                     }
                     else this.trigger("no-session");
-                }
+                }.bind(this)
             ,   error:      function () {
                     this.trigger("no-session");
-                }
+                }.bind(this)
             });
         }
     }
@@ -57,11 +56,11 @@ module.exports = Backbone.Model.extend({
                     user.set(data._source);
                     this.trigger("login");
                 }
-                else Midgard.trigger("login-fail");
-            }
+                else this.trigger("login-fail");
+            }.bind(this)
         ,   error:      function () {
-                Midgard.trigger("login-fail");
-            }
+                this.trigger("login-fail");
+            }.bind(this)
         });
     }
 ,   logout:     function () {
@@ -73,11 +72,11 @@ module.exports = Backbone.Model.extend({
             }
         ,   success:    function () {
                 user.clear();
-                Midgard.trigger("logout");
-            }
+                this.trigger("logout");
+            }.bind(this)
         ,   error:      function () {
-                Midgard.trigger("error", "Failed to logout for unknown reasons.");
-            }
+                this.trigger("error", "Failed to logout for unknown reasons.");
+            }.bind(this)
         });
     }
 ,   isLoggedIn: function () {
