@@ -3,6 +3,7 @@ var _ = require("underscore")
 ,   Backbone = require("backbone")
 ,   $ = require("jquery")
 ,   WidgetView = require("./widget-view")
+,   NavView = require("./navigation-view")
 ;
 
 // This is the primary object responsible for managing the application
@@ -16,10 +17,12 @@ var _ = require("underscore")
 var LayoutView = Backbone.View.extend({
     initialize: function (opt) {
         this.user = opt.user;
+        this.$row = this.$el.find("div.row");
+        this.nav = new NavView({ el: this.el.querySelector("nav") });
 
         // handle user-related changes
-        this.user.on("session-loaded", this.renderForUser.bind(this));
         this.user.on("no-session", this.renderLogin.bind(this));
+        this.user.on("session-loaded", this.renderForUser.bind(this));
         this.user.on("login", this.renderForUser.bind(this));
         this.user.on("logout", this.renderLogin.bind(this));
         this.user.on("login-fail", function () {
@@ -32,6 +35,7 @@ var LayoutView = Backbone.View.extend({
     ,   centre: null
     ,   right:  null
     }
+,   unusedWidgets:  []
 ,   currentID:  0
 ,   nextID: function () {
         return ++this.currentID;
@@ -39,7 +43,7 @@ var LayoutView = Backbone.View.extend({
 ,   instances:  {}
 ,   reset:  function () {
         _.keys(this.instances, function (k) {
-            this.instances[k].remove(); // XXX this needs to remove() the WidgetView itself, not the element
+            this.instances[k].remove();
             delete this.instances[k];
         }.bind(this));
     }
@@ -57,7 +61,7 @@ var LayoutView = Backbone.View.extend({
                     .append($close)
                     .find("h2").html(title).end()
                     .append($content)
-                    .prependTo(this.$el.find("div.left").first())
+                    .prependTo(this.$row.find("div.left").first())
         ;
     }
 ,   error:  function (title, content) {
@@ -76,6 +80,7 @@ var LayoutView = Backbone.View.extend({
             ]
         ,   right:  null
         };
+        this.nav.noUser();
         this.render();
     }
     // the default set of widgets for users who haven't customised anything
@@ -90,6 +95,9 @@ var LayoutView = Backbone.View.extend({
     }
     // render customised per user
 ,   renderForUser:  function () {
+        this.nav.update({
+            unusedWidgets:  this.unusedWidgets
+        });
         if (!this.user.layout) return this.renderDefault();
         this.widgets = this.user.layout;
         this.render();
@@ -99,12 +107,12 @@ var LayoutView = Backbone.View.extend({
     // don't trigger a complete re-render (make them silent)
 ,   render: function () {
         this.reset();
-        this.$el.empty();
+        this.$row.empty();
         this.columns.forEach(function (col) {
             var $column = $("<div></div>")
                             .addClass("col-xs-4")
                             .addClass(col)
-                            .appendTo(this.$el)
+                            .appendTo(this.$row)
             ;
             if (this.widgets[col]) {
                 this.widgets[col].forEach(function (widget) {
