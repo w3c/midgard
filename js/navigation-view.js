@@ -3,7 +3,7 @@ var Backbone = require("backbone")
 ,   $ = require("jquery")
 ;
 
-function makeButton (label, icon, event, $ul) {
+function makeButton (label, icon, event, $ul, self) {
     return $("<li><button><img></button></li>")
                 .find("img")
                     .attr({
@@ -15,7 +15,7 @@ function makeButton (label, icon, event, $ul) {
                 .end()
                 .find("button")
                     .click(function () {
-                        this.trigger(event);
+                        self.trigger(event);
                     }.bind(this))
                 .end()
                 .appendTo($ul)
@@ -26,9 +26,11 @@ var NavView = Backbone.View.extend({
     showing:    false
 ,   noUser: function () {
         this.$el.empty();
+        this.$el.hide();
         this.showing = false;
     }
 ,   update: function (data) {
+        this.$el.show();
         var $ul;
         if (this.showing) $ul = this.$el.find("ul").first();
         else $ul = $("<ul></ul>").appendTo(this.$el);
@@ -36,7 +38,7 @@ var NavView = Backbone.View.extend({
         // widget picker
         // XXX
         // logout
-        makeButton("logout", "sign-out", "logout", $ul);
+        makeButton("logout", "sign-out", "logout", $ul, this);
     }
 });
 

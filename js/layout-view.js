@@ -18,7 +18,10 @@ var LayoutView = Backbone.View.extend({
     initialize: function (opt) {
         this.user = opt.user;
         this.$row = this.$el.find("div.row");
+        
+        // navigation
         this.nav = new NavView({ el: this.el.querySelector("nav") });
+        this.nav.on("logout", function () { this.user.logout(); }.bind(this));
 
         // handle user-related changes
         this.user.on("no-session", this.renderLogin.bind(this));
