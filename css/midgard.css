@@ -94,6 +94,34 @@ header img {
 }
 
 /*
+    ---- NAVIGATION --------------------------------------------------------------------------------
+*/
+nav {
+    background: white;
+    border-radius:  5px;
+    padding:    5px 1rem;
+    margin: 0 16px;
+}
+nav ul {
+    list-style-type:    none;
+    padding:    0;
+    margin: 0;
+    text-align: right;
+}
+nav ul li {
+    display:    inline-block;
+}
+nav button {
+    padding:    5px 5px 0 5px;
+    margin: 0 0 0 5px;
+    border: none;
+    background: transparent;
+}
+nav button:hover {
+    background: #ddd;
+}
+
+/*
     ---- COLUMNS -----------------------------------------------------------------------------------
 */
 main {

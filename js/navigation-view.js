@@ -4,10 +4,16 @@ var Backbone = require("backbone")
 ;
 
 function makeButton (label, icon, event, $ul) {
-    return $("<li><button></button></li>")
+    return $("<li><button><img></button></li>")
+                .find("img")
+                    .attr({
+                        alt:    label
+                    ,   src:    "node_modules/octicons/svg/" + icon + ".svg"
+                    ,   width:  20
+                    ,   height: 20
+                    })
+                .end()
                 .find("button")
-                    .attr("title", label)
-                    .text(icon) // this is more likely to be an image
                     .click(function () {
                         this.trigger(event);
                     }.bind(this))
@@ -30,7 +36,7 @@ var NavView = Backbone.View.extend({
         // widget picker
         // XXX
         // logout
-        makeButton("logout", "logout", "logout", $ul);
+        makeButton("logout", "sign-out", "logout", $ul);
     }
 });
 
