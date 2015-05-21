@@ -12,6 +12,7 @@ Backbone.$ = $;
 
 // register widgets
 WidgetView.registerWidget("login", require("../widgets/login"));
+WidgetView.registerWidget("event-list", require("../widgets/event-list"));
 
 // initialisation
 $(function () {

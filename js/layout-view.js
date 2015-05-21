@@ -11,9 +11,6 @@ var _ = require("underscore")
 // Subviews never communicate up, they trigger events on themselves and have no idea of how they're
 // embedded. They act as insulated components. They expose methods and can be rendered, that's it.
 
-// XXX
-//  need to handle the navigation bar
-
 var LayoutView = Backbone.View.extend({
     initialize: function (opt) {
         this.user = opt.user;
