@@ -100,7 +100,8 @@ main {
     padding-top:    1rem;
 }
 .row {
-    margin-right:   0;
+    margin-right:   8px;
+    margin-left:    8px;
 }
 
 /*
@@ -116,10 +117,39 @@ main {
     margin: 0 0 10px 0;
     border-bottom:  1px solid darkorange;
 }
+.widget.message.error {
+    border-color:   #ebccd1;
+}
+.widget.message.error h2 {
+    border-bottom-color:    #ebccd1;
+    color:  #900;
+    background: #f2dede;
+}
 .widget .content {
     height: 400px;
     overflow:   auto;
     padding:    0 10px 10px 10px;
+}
+.widget.message .content {
+    height: 200px;
+}
+.widget button.close {
+    font-size:  0.7em;
+    font-weight:    bold;
+    border-radius:  50%;
+    border: none;
+    color:  #666;
+    background: #fff;
+    padding:    3px 5px;
+    float:  right;
+    margin: -3.6em 5px 0 0;
+}
+.widget.message.error button.close {
+    color:  #900;
+}
+.widget.message.error button.close:hover {
+    color:  #fff;
+    background: #900;
 }
 
 /*

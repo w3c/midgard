@@ -18,7 +18,8 @@ var LayoutView = Backbone.View.extend({
         this.user.on("login", this.renderForUser.bind(this));
         this.user.on("logout", this.renderLogin.bind(this));
         this.user.on("login-fail", function () {
-            this.error("Login failure", "Please check your login/password combination.");
+            console.log("login failure");
+            this.error("Login failure", "<p>Please check your login/password combination.</p>");
         }.bind(this));
     }
 ,   columns:    ["left", "centre", "right"]
@@ -41,20 +42,23 @@ var LayoutView = Backbone.View.extend({
 ,   message:    function (style, title, content) {
         var $content = $("<div></div>").addClass("content").html(content)
         ,   $close = $("<button>╳</button>")
+                            .addClass("close")
                             .click(function (ev) {
                                 $(ev.target.parentNode).remove();
                             })
         ;
-        return $("<div><h3></h3></div>")
-                    .addClass("message")
+        console.log("showing message...");
+        return $("<div><h2></h2></div>")
+                    .addClass("message widget box-row")
                     .addClass(style)
                     .append($close)
-                    .find("h3").html(title).end()
+                    .find("h2").html(title).end()
                     .append($content)
-                    .appendTo(this.$el)
+                    .prependTo(this.$el.find("div.left").first())
         ;
     }
 ,   error:  function (title, content) {
+        console.error("ERROR", title, content);
         title = title || "Error";
         return this.message("error", title, content);
     }

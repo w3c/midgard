@@ -7,7 +7,7 @@ var Backbone = require("backbone")
 // A model representing the current user (efffectively used as a singleton)
 //
 // Methods:
-//  login(id, password): logs the user in
+//  login(username, password): logs the user in
 //  logout(): logs the user out
 //  sync(): tries to log the user in based on a revived session on reading (#fetch())
 //
@@ -20,8 +20,8 @@ var Backbone = require("backbone")
 
 module.exports = Backbone.Model.extend({
     defaults:   {
-        id:     null
-    ,   acl:    "public"
+        username:   null
+    ,   acl:        "public"
     }
 ,   sync:       function (method, model) {
         if (method === "read") {
@@ -33,7 +33,7 @@ module.exports = Backbone.Model.extend({
             ,   success:    function (data) {
                     console.log("sync", data);
                     if (data.found) {
-                        model.set(data._source);
+                        model.set(data.payload);
                         return this.trigger("session-loaded");
                     }
                     else this.trigger("no-session");
@@ -45,18 +45,21 @@ module.exports = Backbone.Model.extend({
             });
         }
     }
-,   login:      function (id, password) {
+,   login:      function (username, password) {
         var user = this;
+        console.log({ username: username, password: password });
         $.ajax(endpoints.user, {
-            data:   { id: id, password: password }
-        ,   method: "POST"
+            data:           JSON.stringify({ username: username, password: password })
+        ,   contentType:    "application/json"
+        ,   processData:    false
+        ,   method:         "POST"
         ,   xhrFields: {
                 withCredentials: true
             }
         ,   success:    function (data) {
                 console.log("login", data);
                 if (data.found) {
-                    user.set(data._source);
+                    user.set(data.payload);
                     this.trigger("login");
                 }
                 else this.trigger("login-fail");
@@ -84,6 +87,6 @@ module.exports = Backbone.Model.extend({
         });
     }
 ,   isLoggedIn: function () {
-        return !!this.get("id");
+        return !!this.get("username");
     }
 });

@@ -17,7 +17,7 @@ var Login = WidgetView.extend({
             .find("form")
             .submit(function (evt) {
                 evt.preventDefault();
-                this.trigger("login-attempt", $("#login-id").val(), $("#login-password").val());
+                this.trigger("login-attempt", $("#login-username").val(), $("#login-password").val());
             }.bind(this))
         ;
     }
