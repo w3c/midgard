@@ -110,6 +110,7 @@ main {
 .widget {
     background: #fff;
     border: 1px solid oldlace;
+    margin-bottom:  1rem;
 }
 .widget h2 {
     font-weight:    normal;

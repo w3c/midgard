@@ -32,7 +32,7 @@ module.exports = Backbone.Model.extend({
                 }
             ,   success:    function (data) {
                     console.log("sync", data);
-                    if (data.found) {
+                    if (data.type === "user") {
                         model.set(data.payload);
                         return this.trigger("session-loaded");
                     }
@@ -47,7 +47,6 @@ module.exports = Backbone.Model.extend({
     }
 ,   login:      function (username, password) {
         var user = this;
-        console.log({ username: username, password: password });
         $.ajax(endpoints.user, {
             data:           JSON.stringify({ username: username, password: password })
         ,   contentType:    "application/json"
@@ -58,7 +57,7 @@ module.exports = Backbone.Model.extend({
             }
         ,   success:    function (data) {
                 console.log("login", data);
-                if (data.found) {
+                if (data.type === "user") {
                     user.set(data.payload);
                     this.trigger("login");
                 }
