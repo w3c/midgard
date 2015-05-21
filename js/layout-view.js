@@ -5,6 +5,11 @@ var _ = require("underscore")
 ,   WidgetView = require("./widget-view")
 ;
 
+// This is the primary object responsible for managing the application
+// It builds subviews, listens to what they do.
+// Subviews never communicate up, they trigger events on themselves and have no idea of how they're
+// embedded. They act as insulated components. They expose methods and can be rendered, that's it.
+
 // XXX
 //  need to handle the navigation bar
 
@@ -18,7 +23,6 @@ var LayoutView = Backbone.View.extend({
         this.user.on("login", this.renderForUser.bind(this));
         this.user.on("logout", this.renderLogin.bind(this));
         this.user.on("login-fail", function () {
-            console.log("login failure");
             this.error("Login failure", "<p>Please check your login/password combination.</p>");
         }.bind(this));
     }
@@ -47,7 +51,6 @@ var LayoutView = Backbone.View.extend({
                                 $(ev.target.parentNode).remove();
                             })
         ;
-        console.log("showing message...");
         return $("<div><h2></h2></div>")
                     .addClass("message widget box-row")
                     .addClass(style)
@@ -58,7 +61,6 @@ var LayoutView = Backbone.View.extend({
         ;
     }
 ,   error:  function (title, content) {
-        console.error("ERROR", title, content);
         title = title || "Error";
         return this.message("error", title, content);
     }

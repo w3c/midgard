@@ -31,7 +31,6 @@ module.exports = Backbone.Model.extend({
                     withCredentials: true
                 }
             ,   success:    function (data) {
-                    console.log("sync", data);
                     if (data.type === "user") {
                         model.set(data.payload);
                         return this.trigger("session-loaded");
@@ -39,7 +38,6 @@ module.exports = Backbone.Model.extend({
                     else this.trigger("no-session");
                 }.bind(this)
             ,   error:      function () {
-                    console.error("error getting user");
                     this.trigger("no-session");
                 }.bind(this)
             });
@@ -56,7 +54,6 @@ module.exports = Backbone.Model.extend({
                 withCredentials: true
             }
         ,   success:    function (data) {
-                console.log("login", data);
                 if (data.type === "user") {
                     user.set(data.payload);
                     this.trigger("login");
@@ -64,7 +61,6 @@ module.exports = Backbone.Model.extend({
                 else this.trigger("login-fail");
             }.bind(this)
         ,   error:      function () {
-                console.error("login fail");
                 this.trigger("login-fail");
             }.bind(this)
         });
