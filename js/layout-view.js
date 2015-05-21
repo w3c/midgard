@@ -127,7 +127,7 @@ var LayoutView = Backbone.View.extend({
 ,   installListeners:   function (widget) {
         widget.on("login-attempt", function (id, password) {
             this.user.login(id, password);
-        });
+        }.bind(this));
     }
 });
 

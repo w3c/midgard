@@ -4,6 +4,9 @@ var $ = require("jquery")
 ,   WidgetView = require("../../js/widget-view")
 ;
 
+// Events:
+//  login-attempt(username, password): attempting to log in
+
 var Login = WidgetView.extend({
     initialise: function (data) {
         this.parentView = data.parentView;
@@ -12,10 +15,10 @@ var Login = WidgetView.extend({
         this.$el
             .html(form({}))
             .find("form")
-            .submit(function () {
+            .submit(function (evt) {
+                evt.preventDefault();
                 this.trigger("login-attempt", $("#login-id").val(), $("#login-password").val());
-                return false;
-            })
+            }.bind(this))
         ;
     }
 });
