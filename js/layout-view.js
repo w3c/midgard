@@ -14,6 +14,7 @@ var LayoutView = Backbone.View.extend({
 
         // handle user-related changes
         this.user.on("session-loaded", this.renderForUser.bind(this));
+        this.user.on("no-session", this.renderLogin.bind(this));
         this.user.on("login", this.renderForUser.bind(this));
         this.user.on("logout", this.renderLogin.bind(this));
         this.user.on("login-fail", function () {
