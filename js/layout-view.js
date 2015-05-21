@@ -4,6 +4,7 @@ var _ = require("underscore")
 ,   $ = require("jquery")
 ,   WidgetView = require("./widget-view")
 ,   NavView = require("./navigation-view")
+,   endpoints = require("./endpoints")
 ;
 
 // This is the primary object responsible for managing the application
@@ -15,6 +16,35 @@ var LayoutView = Backbone.View.extend({
     initialize: function (opt) {
         this.user = opt.user;
         this.$row = this.$el.find("div.row");
+
+        // load list of event streams
+        // for each event stream, add an available widget that has "event-list" as its ID, the title
+        // and description from the data, and a filterName field in its data
+        // there could be race conditions here
+        $.ajax(endpoints.events, {
+            method: "GET"
+        ,   xhrFields: {
+                withCredentials: true
+            }
+        ,   success:    function (data) {
+                this.availableWidgets = [];
+                for (var k in data) {
+                    var key = "event-list-" + k;
+                    this.availableWidgets[key] = {
+                        id:             "event-list"
+                    ,   used:           false
+                    ,   title:          data[k].name
+                    ,   description:    data[k].description
+                    ,   data:   {
+                            filterName: k
+                        }
+                    };
+                }
+            }.bind(this)
+        ,   error:      function () {
+                console.error("Error loading list of event filters");
+            }.bind(this)
+        });
         
         // navigation
         this.nav = new NavView({ el: this.el.querySelector("nav") });
@@ -35,7 +65,7 @@ var LayoutView = Backbone.View.extend({
     ,   centre: null
     ,   right:  null
     }
-,   unusedWidgets:  []
+,   availableWidgets:   {}
 ,   currentID:  0
 ,   nextID: function () {
         return ++this.currentID;
@@ -68,6 +98,13 @@ var LayoutView = Backbone.View.extend({
         title = title || "Error";
         return this.message("error", title, content);
     }
+,   useWidget:  function (key, col) {
+        if (!this.widgets[col]) this.widgets[col] = [];
+        var widDef = this.availableWidgets[key];
+        if (!widDef) return console.error("No known widget for " + key);
+        widDef.used = true;
+        this.widgets[col].push(widDef);
+    }
     // special rendering for the login screen that just removes everything
 ,   renderLogin:    function () {
         var w = this.widgets;
@@ -91,13 +128,18 @@ var LayoutView = Backbone.View.extend({
         ,   centre: null
         ,   right:  null
         };
+        this.useWidget("event-list-wpt", "left");
+        this.useWidget("event-list-modern-tooling", "centre");
+        this.useWidget("event-list-w3cmemes", "right");
         this.render();
     }
     // render customised per user
 ,   renderForUser:  function () {
-        this.nav.update({
-            unusedWidgets:  this.unusedWidgets
-        });
+        var unusedWidgets = [];
+        for (var k in this.availableWidgets) {
+            if (!this.availableWidgets[k].used) unusedWidgets.push(this.availableWidgets[k]);
+        }
+        this.nav.update({ unusedWidgets: unusedWidgets });
         if (!this.user.layout) return this.renderDefault();
         this.widgets = this.user.layout;
         this.render();
@@ -129,7 +171,7 @@ var LayoutView = Backbone.View.extend({
                     this.instances[wid] = WidgetView.createWidget(widget.id, {
                                                 data:       widget.data
                                             ,   el:         $parent[0]
-                                            ,   parentView: this
+                                            // ,   parentView: this
                     });
                     this.installListeners(this.instances[wid]);
                     this.instances[wid].render();

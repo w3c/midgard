@@ -100,7 +100,7 @@ nav {
     background: white;
     border-radius:  5px;
     padding:    5px 1rem;
-    margin: 0 16px;
+    margin: 0 16px 16px 16px;
 }
 nav ul {
     list-style-type:    none;

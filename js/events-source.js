@@ -6,8 +6,9 @@ var Backbone = require("backbone")
 ;
 
 var EventsSource = Backbone.Collection.extend({
-    initialize: function (filterName) {
-        this.filterName = filterName;
+    initialize: function (opt) {
+        console.log("EventsSource", opt.filterName);
+        this.filterName = opt.filterName;
     }
 ,   model:  Event
 ,   comparator: function (a, b) {
@@ -17,13 +18,14 @@ var EventsSource = Backbone.Collection.extend({
     }
 ,   sync:   function (method, collection) {
         if (method === "read") {
-            $.ajax(endpoints.filter + "/" + this.filterName, {
+            $.ajax(endpoints.events + "/" + this.filterName, {
                 method: "GET"
             ,   xhrFields: {
                     withCredentials: true
                 }
             ,   success:    function (data) {
-                    if (data && data.length) collection.set(data);
+                    console.log("loaded events", data);
+                    if (data.payload) collection.set(data.payload);
                     else collection.trigger("no-data");
                 }
             ,   error:      function () {

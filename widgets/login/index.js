@@ -8,10 +8,7 @@ var $ = require("jquery")
 //  login-attempt(username, password): attempting to log in
 
 var Login = WidgetView.extend({
-    initialise: function (data) {
-        this.parentView = data.parentView;
-    }
-,   render: function () {
+    render: function () {
         this.$el
             .html(form({}))
             .find("form")
