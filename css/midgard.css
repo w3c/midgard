@@ -182,6 +182,37 @@ main {
 }
 
 /*
+    ---- EVENTS ------------------------------------------------------------------------------------
+*/
+ul.event-list {
+    list-style-type:    none;
+    padding:    0;
+    margin: 0;
+}
+ul.event-list > li {
+    display:    block;
+    padding:    5px 0;
+    border-bottom:  1px solid silver;
+}
+ul.event-list > li:last-of-type {
+    border-bottom:  none;
+}
+.content div.paginate {
+    text-align: right;
+}
+ul.event-list img {
+    max-width:  100%;
+}
+ul.event-list div.meta {
+    font-size:  0.8em;
+    color:  #666;
+    text-align: right;
+}
+ul.event-list div.meta a {
+    text-decoration: none;
+}
+
+/*
     ---- FORMS -------------------------------------------------------------------------------------
 */
 .content label {
