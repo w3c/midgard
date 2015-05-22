@@ -1,0 +1,8 @@
+<p>
+  <span class='gh-user'>@{{sender}}</span> <em>{{action}}</em> issue
+  <a href="{{issue.html_url}}" target="_blank">{{repository}}#{{issue.number}}</a>
+  <span class="issue-title">“{{issue.title}}”</span>.
+  {{#if label}}<span class="label" style="background: #{{label.color}}">{{label.name}}</span>{{/if}}
+</p>
+<!-- XXX this is MD, we need to render it, and safely -->
+<pre class="more">{{issue.body}}</pre>

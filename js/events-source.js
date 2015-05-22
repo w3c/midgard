@@ -7,7 +7,6 @@ var Backbone = require("backbone")
 
 var EventsSource = Backbone.Collection.extend({
     initialize: function (opt) {
-        console.log("EventsSource", opt.filterName);
         this.filterName = opt.filterName;
     }
 ,   model:  Event
@@ -24,7 +23,6 @@ var EventsSource = Backbone.Collection.extend({
                     withCredentials: true
                 }
             ,   success:    function (data) {
-                    console.log("loaded events", data);
                     if (data.payload) collection.set(data.payload);
                     else collection.trigger("no-data");
                 }

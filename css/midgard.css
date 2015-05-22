@@ -224,6 +224,19 @@ ul.event-list .more {
 ul.event-list .gh-user {
     font-weight:    bold;
 }
+ul.event-list .issue-title {
+    font-weight:    bold;
+}
+ul.event-list .label {
+    display:    inline-block;
+    font-size:  0.8em;
+    color:  white;
+    padding:    0 5px;
+    border-radius:  5px;
+}
+ul.commits-list {
+    padding-left:   15px;
+}
 
 /*
     ---- FORMS -------------------------------------------------------------------------------------
