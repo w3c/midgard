@@ -203,13 +203,26 @@ ul.event-list > li:last-of-type {
 ul.event-list img {
     max-width:  100%;
 }
+ul.event-list a {
+    color:  darkorange;
+    text-decoration: none;
+}
+ul.event-list pre {
+    white-space: pre-wrap;
+}
 ul.event-list div.meta {
     font-size:  0.8em;
     color:  #666;
     text-align: right;
 }
-ul.event-list div.meta a {
-    text-decoration: none;
+ul.event-list p:first-of-type {
+    margin-top: 0;
+}
+ul.event-list .more {
+    display:    none;
+}
+ul.event-list .gh-user {
+    font-weight:    bold;
 }
 
 /*

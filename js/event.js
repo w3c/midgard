@@ -1,11 +1,6 @@
 
 var Backbone = require("backbone");
 
-var Event = Backbone.Model.extend({
-    render: function () {
-        console.log(this.attributes);
-    }
-});
-
+var Event = Backbone.Model.extend({});
 module.exports = Event;
 

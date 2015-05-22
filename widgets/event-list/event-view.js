@@ -1,6 +1,7 @@
 
 var Backbone = require("backbone")
 ,   $ = require("jquery")
+,   issue_comment_created = require("./issue-comment-created.hbs")
 ;
 
 function meta (date, link, $parent) {
@@ -27,6 +28,15 @@ function cleanup (html, origin) {
     return html;
 }
 
+function eventBox ($el, icon) {
+    $el.css({
+        "padding-left":         "20px"
+    ,   background:             "url('../node_modules/octicons/svg/" + icon + ".svg') no-repeat"
+    ,   "background-size":      "15px 15px"
+    ,   "background-position":  "0 7px"
+    });
+}
+
 var EventView = Backbone.View.extend({
     render: function () {
         // switch on various types of events and their content in order
@@ -36,12 +46,22 @@ var EventView = Backbone.View.extend({
         ,   p = this.model.get("payload")
         ,   $el = this.$el
         ;
-        console.log("event=" + evtType);
+        // any RSS entry looks like this
         if (evtType === "rss") {
+            meta(time, p.link, $el);
             if (p.lang) $el.attr("lang", p.lang);
             if (origin !== "W3CMemes") $("<h3></h3>").text(p.title).appendTo($el);
             $el.append(cleanup(p.summary || p.content, origin));
-            meta(time, p.link, $el);
+        }
+        // Comment made on a GH issue
+        else if (evtType === "issue_comment") {
+            console.log(p);
+            eventBox($el, "comment");
+            if (p.action === "created") {
+                meta(time, p.comment.html_url, $el);
+                $el.append(issue_comment_created(p));
+            }
+            else console.log("Ignoring issue_comment action=" + p.action);
         }
         else {
             console.log("Ignoring event " + evtType);
