@@ -5,61 +5,61 @@
 */
 @font-face {
     font-family: "Source Sans";
-    src: url("/fonts/sourcesanspro-regular-webfont.eot");
-    src: url("/fonts/sourcesanspro-regular-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/sourcesanspro-regular-webfont.woff2") format("woff2"),
-         url("/fonts/sourcesanspro-regular-webfont.woff") format("woff"),
-         url("/fonts/sourcesanspro-regular-webfont.ttf") format("truetype");
+    src: url("../fonts/sourcesanspro-regular-webfont.eot");
+    src: url("../fonts/sourcesanspro-regular-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-regular-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-regular-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-regular-webfont.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: "Source Sans";
-    src: url("/fonts/sourcesanspro-italic-webfont.eot");
-    src: url("/fonts/sourcesanspro-italic-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/sourcesanspro-italic-webfont.woff2") format("woff2"),
-         url("/fonts/sourcesanspro-italic-webfont.woff") format("woff"),
-         url("/fonts/sourcesanspro-italic-webfont.ttf") format("truetype");
+    src: url("../fonts/sourcesanspro-italic-webfont.eot");
+    src: url("../fonts/sourcesanspro-italic-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-italic-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-italic-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-italic-webfont.ttf") format("truetype");
     font-weight: normal;
     font-style: italic;
 }
 @font-face {
     font-family: "Source Sans";
-    src: url("/fonts/sourcesanspro-bold-webfont.eot");
-    src: url("/fonts/sourcesanspro-bold-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/sourcesanspro-bold-webfont.woff2") format("woff2"),
-         url("/fonts/sourcesanspro-bold-webfont.woff") format("woff"),
-         url("/fonts/sourcesanspro-bold-webfont.ttf") format("truetype");
+    src: url("../fonts/sourcesanspro-bold-webfont.eot");
+    src: url("../fonts/sourcesanspro-bold-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-bold-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-bold-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-bold-webfont.ttf") format("truetype");
     font-weight: bold;
     font-style: normal;
 }
 @font-face {
     font-family: "Source Sans";
-    src: url("/fonts/sourcesanspro-bolditalic-webfont.eot");
-    src: url("/fonts/sourcesanspro-bolditalic-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/sourcesanspro-bolditalic-webfont.woff2") format("woff2"),
-         url("/fonts/sourcesanspro-bolditalic-webfont.woff") format("woff"),
-         url("/fonts/sourcesanspro-bolditalic-webfont.ttf") format("truetype");
+    src: url("../fonts/sourcesanspro-bolditalic-webfont.eot");
+    src: url("../fonts/sourcesanspro-bolditalic-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-bolditalic-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-bolditalic-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-bolditalic-webfont.ttf") format("truetype");
     font-weight: bold;
     font-style: italic;
 }
 @font-face {
     font-family: "Source Sans";
-    src: url("/fonts/sourcesanspro-extralight-webfont.eot");
-    src: url("/fonts/sourcesanspro-extralight-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/sourcesanspro-extralight-webfont.woff2") format("woff2"),
-         url("/fonts/sourcesanspro-extralight-webfont.woff") format("woff"),
-         url("/fonts/sourcesanspro-extralight-webfont.ttf") format("truetype");
+    src: url("../fonts/sourcesanspro-extralight-webfont.eot");
+    src: url("../fonts/sourcesanspro-extralight-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-extralight-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-extralight-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-extralight-webfont.ttf") format("truetype");
     font-weight: 300;
     font-style: normal;
 }
 @font-face {
     font-family: "Source Sans";
-    src: url("/fonts/sourcesanspro-extralightitalic-webfont.eot");
-    src: url("/fonts/sourcesanspro-extralightitalic-webfont.eot?#iefix") format("embedded-opentype"),
-         url("/fonts/sourcesanspro-extralightitalic-webfont.woff2") format("woff2"),
-         url("/fonts/sourcesanspro-extralightitalic-webfont.woff") format("woff"),
-         url("/fonts/sourcesanspro-extralightitalic-webfont.ttf") format("truetype");
+    src: url("../fonts/sourcesanspro-extralightitalic-webfont.eot");
+    src: url("../fonts/sourcesanspro-extralightitalic-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-extralightitalic-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-extralightitalic-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-extralightitalic-webfont.ttf") format("truetype");
     font-weight: 300;
     font-style: italic;
 }
@@ -84,7 +84,7 @@ img.loading {
 */
 header {
     text-align: right;
-    background: url("/img/criss-cross.svg") darkorange;
+    background: url("../img/criss-cross.svg") darkorange;
     line-height:    0;
     border-bottom:  3px solid oldlace;
 }
