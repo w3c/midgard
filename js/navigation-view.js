@@ -1,6 +1,7 @@
 
 var Backbone = require("backbone")
 ,   $ = require("jquery")
+,   endpoints = require("./endpoints")
 ;
 
 function makeButton (label, icon, event, $ul, self) {
@@ -8,7 +9,7 @@ function makeButton (label, icon, event, $ul, self) {
                 .find("img")
                     .attr({
                         alt:    label
-                    ,   src:    "node_modules/octicons/svg/" + icon + ".svg"
+                    ,   src:    endpoints.octicons + icon + ".svg"
                     ,   width:  20
                     ,   height: 20
                     })

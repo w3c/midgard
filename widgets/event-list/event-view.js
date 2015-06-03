@@ -5,6 +5,7 @@ var Backbone = require("backbone")
 ,   issue_comment_created = require("./issue-comment-created.hbs")
 ,   pull_request = require("./pull-request.hbs")
 ,   push = require("./push.hbs")
+,   endpoints = require("../../js/endpoints")
 ;
 
 function meta (date, link, $parent) {
@@ -34,7 +35,7 @@ function cleanup (html, origin) {
 function eventBox ($el, icon) {
     $el.css({
         "padding-left":         "20px"
-    ,   background:             "url('../node_modules/octicons/svg/" + icon + ".svg') no-repeat"
+    ,   background:             "url('" + endpoints.octicons + icon + ".svg') no-repeat"
     ,   "background-size":      "15px 15px"
     ,   "background-position":  "0 7px"
     });

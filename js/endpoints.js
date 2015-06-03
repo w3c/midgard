@@ -6,3 +6,5 @@ if (!window.config && window.config.api) throw(new Error("You must specify a con
 exports.user = url.resolve(window.config.api, "api/user");
 exports.events = url.resolve(window.config.api, "api/events");
 
+exports.octicons = url.resolve(window.config.root, "node_modules/octicons/svg/");
+
