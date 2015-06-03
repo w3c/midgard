@@ -1,8 +1,8 @@
 
-var config = require("../config.json")
-,   url = require("url")
-;
+var url = require("url");
 
-exports.user = url.resolve(config.api, "/api/user");
-exports.events = url.resolve(config.api, "/api/events");
+if (!window.config && window.config.api) throw(new Error("You must specify a config.js file."));
+
+exports.user = url.resolve(window.config.api, "/api/user");
+exports.events = url.resolve(window.config.api, "/api/events");
 

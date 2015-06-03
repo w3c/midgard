@@ -1,11 +1,12 @@
 
 TODO:
-    ✓ load _
-    ✓ load BB
-    ✓ set up sync handler
-    ✓ write server endpoint
-    - expose locally, too (at pheme.bast)
-        - this needs to be configurable
+    - apply clean-css
+    - have all data access go through Fetch instead of the horrible jQuery API
+    - switch all to ES6 by default
+    - replace Handlebars with ES6 strings for the templating
+    - add a "see more" link to those events in which it makes sense, and get rendered HTML as in
+      https://developer.github.com/v3/media/. Or even just load it by default (from the client).
+    - switch to the mailbox style, it's much cleaner
 
 
 LOAD:
