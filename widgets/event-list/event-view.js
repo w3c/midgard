@@ -98,7 +98,6 @@ var EventView = Backbone.View.extend({
 
         // push
         else if (evtType === "push") {
-            console.log(p);
             p.branch = p.ref.replace("refs/heads/", "");
             p.commits.forEach(function (c) { c.short_sha = c.id.substr(0, 7); });
             eventBox($el, "repo-push");
@@ -106,6 +105,7 @@ var EventView = Backbone.View.extend({
             $el.append(push(p));
         }
 
+        // log ignored events so that we don't forget
         else {
             console.log("Ignoring event " + evtType);
         }
