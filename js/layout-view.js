@@ -129,6 +129,7 @@ var LayoutView = Backbone.View.extend({
         ,   right:  null
         };
         this.useWidget("event-list-wpt", "left");
+        this.useWidget("event-list-html-future", "left");
         this.useWidget("event-list-modern-tooling", "centre");
         this.useWidget("event-list-w3cmemes", "right");
         this.render();

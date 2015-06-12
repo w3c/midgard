@@ -7,6 +7,8 @@ TODO:
     - add a "see more" link to those events in which it makes sense, and get rendered HTML as in
       https://developer.github.com/v3/media/. Or even just load it by default (from the client).
     - switch to the mailbox style, it's much cleaner
+    - login errors should look like this:
+        https://twitter.com/dontcallmeDOM/status/605344338764279809
 
 
 LOAD:
