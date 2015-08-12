@@ -7,6 +7,7 @@ var anymatch = require('anymatch');
 var globparent = require('glob-parent');
 var isglob = require('is-glob');
 var arrify = require('arrify');
+var isAbsolute = require('path-is-absolute');
 
 var NodeFsHandler = require('./lib/nodefs-handler');
 var FsEventsHandler = require('./lib/fsevents-handler');
@@ -141,6 +142,9 @@ FSWatcher.prototype._emit = function(event, path, val1, val2, val3) {
     (event === 'add' || event === 'addDir' || event === 'change')
   ) {
     fs.stat(path, function(error, stats) {
+      // Suppress event when fs.stat fails, to avoid sending undefined 'stat'
+      if (error || !stats) return;
+
       args.push(stats);
       emitEvent();
     });
@@ -202,17 +206,26 @@ FSWatcher.prototype._isIgnored = function(path, stats) {
     /\..*\.(sw[px])$|\~$|\.subl.*\.tmp/.test(path)
   ) return true;
 
-  // create the anymatch fn if it doesn't already exist
-  this._userIgnored = this._userIgnored || anymatch(this._globIgnored
-    .concat(this.options.ignored)
-    .concat(arrify(this.options.ignored)
-      .filter(function(path) {
-        return typeof path === 'string' && !isglob(path);
-      }).map(function(path) {
-        return path + '/**/*';
-      })
-    )
-  );
+  if (!this._userIgnored) {
+    var cwd = this.options.cwd;
+    var ignored = this.options.ignored;
+    if (cwd && ignored) {
+      ignored = arrify(ignored).map(function (path) {
+        if (typeof path !== 'string') return path;
+        return isAbsolute(path) ? path : sysPath.join(cwd, path);
+      });
+    }
+    this._userIgnored = anymatch(this._globIgnored
+      .concat(ignored)
+      .concat(arrify(ignored)
+        .filter(function(path) {
+          return typeof path === 'string' && !isglob(path);
+        }).map(function(path) {
+          return path + '/**/*';
+        })
+      )
+    );
+  }
 
   return this._userIgnored([path, stats]);
 };
@@ -371,12 +384,19 @@ FSWatcher.prototype._remove = function(directory, item) {
 
 // Returns an instance of FSWatcher for chaining.
 FSWatcher.prototype.add = function(paths, _origAdd, _internal) {
+  var cwd = this.options.cwd;
   this.closed = false;
   paths = arrify(paths);
 
-  if (this.options.cwd) paths = paths.map(function(path) {
-    return sysPath.join(this.options.cwd, path);
-  }, this);
+  if (cwd) paths = paths.map(function(path) {
+    if (isAbsolute(path)) {
+      return path;
+    } else if (path[0] === '!') {
+      return '!' + sysPath.join(cwd, path.substring(1));
+    } else {
+      return sysPath.join(cwd, path);
+    }
+  });
 
   // set aside negated glob strings
   paths = paths.filter(function(path) {
@@ -407,7 +427,7 @@ FSWatcher.prototype.add = function(paths, _origAdd, _internal) {
         next(err, res);
       }.bind(this));
     }.bind(this), function(error, results) {
-      results.forEach(function(item){
+      results.forEach(function(item) {
         if (!item) return;
         this.add(sysPath.dirname(item), sysPath.basename(_origAdd || item));
       }, this);

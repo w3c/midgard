@@ -1,9 +1,34 @@
 
+REACTIFY:
+    - rewrite index.html to just load the real dependencies
+    - rewrite the css to have an entry point, use ungrid and normalize, reuse the same stuff as AN
+    - move all the existing JS into an "OLD" directory, to be ported one by one
+    - have the root render as a react component
+    - get the login logic from AN and port it to the model we have here
+    - render the login
+    - start porting over the rest piece by piece
+
+MAILBOX:
+    - keep track of last seen
+    - show badges
+    - show list of mailboxes that depends on configured filters
+    - store/load filter preferences from user
+    - drop the widgets ideas
+
+DB:
+    - have the DB be configured when run, not on load
+
+PHEME:
+    - have loaders be in charge of knowing when they've already seen a given item
+    - add support for minutes using https://cvs.w3.org/recent-commits?user=swick
+
+
+
+
+
+
 TODO:
-    - apply clean-css
     - have all data access go through Fetch instead of the horrible jQuery API
-    - switch all to ES6 by default
-    - replace Handlebars with ES6 strings for the templating
     - add a "see more" link to those events in which it makes sense, and get rendered HTML as in
       https://developer.github.com/v3/media/. Or even just load it by default (from the client).
     - switch to the mailbox style, it's much cleaner
