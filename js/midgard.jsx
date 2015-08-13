@@ -7,8 +7,6 @@ import BrowserHistory from "react-router/lib/BrowserHistory";
 import Application from "../components/application.jsx";
 import Row from "../components/row.jsx";
 import Col from "../components/col.jsx";
-// import NavBox from "./components/nav-box.jsx";
-// import NavItem from "./components/nav-item.jsx";
 import Spinner from "../components/spinner.jsx";
 import FlashList from "../components/flash-list.jsx";
 
@@ -43,7 +41,10 @@ class W3CDashboard extends React.Component {
     }
 
     render () {
-        let st = this.state;
+        let st = this.state
+        ,   nav
+        ,   body
+        ;
         // when logged in show an actual menu and content
         if (st.loggedIn === true) {
             // nav = <Col className="nav">
@@ -70,12 +71,12 @@ class W3CDashboard extends React.Component {
         }
         // while we don't know if we're logged in or out, spinner
         else {
-            // body = <Col><Spinner prefix={pp}/></Col>;
+            body = <Spinner prefix={pp}/>;
         }
         return <Application title="W3C Dashboard">
                   <FlashList store={MessageStore} actions={MessageActions}/>
-                  <Row>
-                  </Row>
+                  {nav}
+                  {body}
                 </Application>
         ;
     }
