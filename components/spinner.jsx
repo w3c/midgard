@@ -9,7 +9,7 @@ export default class Spinner extends React.Component {
         ;
         if (this.props.size === "small") size /= 2;
         return <div className="spinner">
-                <svg xmlns="http://www.w3.org/2000/svg" width={size + "px"} height={size + "px"}>
+                <svg xmlns="http://www.w3.org/2000/svg" width={size + "px"} height={size + "px"} viewBox="0 0 52 52">
                     <style>{`
                         @keyframes fading {
                             0%      { opacity: 1; }
