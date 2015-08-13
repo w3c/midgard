@@ -32,7 +32,7 @@
       "build-js": "browserify app.jsx | uglifyjs - -c warnings=false -m > js/midgard.min.js",
       "watch-js": "watchify js/midgard.jsx --verbose --ignore-watch=\"**/node_modules/**\" --ignore-watch=\"**/js/midgard.min.js\" -o 'uglifyjs - -c warnings=false -m > js/midgard.min.js'",
       "build-css": "cleancss -o ./css/midgard.min.css ./css/midgard.css",
-      "watch-css": "nodemon --ignore ./css/midgard.min.css -e css --exec 'npm run build-css'",
+      "watch-css": "nodemon --watch css/midgard.css --exec 'npm run build-css'",
       "build": "npm run build-css && npm run build-js",
       "watch": "npm run watch-css & npm run watch-js"
   }
