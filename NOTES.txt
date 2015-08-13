@@ -2,8 +2,8 @@
 REACTIFY:
     ✓ move all the existing JS into an "OLD" directory, to be ported one by one
     ✓ rewrite the css to have an entry point, use ungrid and normalize, reuse the same stuff as AN
+    ✓ rewrite index.html to just load the real dependencies
     - have the root render as a react component
-    - rewrite index.html to just load the real dependencies
     - get the login logic from AN and port it to the model we have here
     - render the login
     - start porting over the rest piece by piece
