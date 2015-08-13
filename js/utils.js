@@ -1,6 +1,6 @@
 
 import React from "react";
-import MessageActions from "../actions/messages";
+import MessageActions from "./actions/messages";
 
 
 let config = require("../config.json");
