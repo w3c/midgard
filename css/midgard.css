@@ -73,8 +73,7 @@ header {
     padding: 0 0 0 10px;
 }
 h1, div.app-body {
-    max-width:  960px;
-    margin: auto;
+    margin: 0 30px;
 }
 h1 {
     color: #f1647c;
@@ -100,51 +99,10 @@ a:hover {
     width:  200px;
     padding:    0 10px;
 }
-.nav-box {
-    margin-bottom:  20px;
-}
-.nav-box-header {
-    font-weight:    bold;
-    color:  darkgrey;
-    border-bottom:  1px solid silver;
-}
-.nav-box ul {
-    list-style-type:    none;
-    padding:    0;
-    margin: 0;
-}
-.nav-box li a, .nav-box li button {
-    color:  #f1647c;
-    display:    block;
-    width:  100%;
-    text-align: left;
-    padding:    5px;
-    text-decoration:    none;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    font:   inherit;
-}
-.nav-box li a:hover, .nav-box li button:hover {
-    background: #f1647c;
-    color:  #fff;
-}
-.nav-box li a.active, .nav-box li button:active {
-    font-weight:    bold;
-}
-.primary-app {
-    padding-left:   30px;
-}
 */
 
-/*.login-box {
-    width:  350px;
-    border: 1px solid silver;
-    padding:    10px 20px;
-}
-
-*/
-/*.formline {
+/* forms */
+.formline {
     width:  auto;
     padding-bottom: 10px;
 }
@@ -155,7 +113,7 @@ a:hover {
 .formline.actions {
     text-align: right;
 }
-*/
+
 
 /* ui */
 .spinner {
@@ -230,3 +188,37 @@ button:disabled {
 td.good, td.bad {
     font-weight:    bold;
 }
+
+/* login */
+.login-box {
+    max-width:  350px;
+    border: 1px solid silver;
+    padding:    10px 20px;
+    margin: 50px auto;
+}
+
+/* toolbar */
+.toolbar {
+    text-align: right;
+}
+.toolbar button {
+    color:  #f1647c;
+    padding:    5px 10px;
+    text-decoration:    none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius:  0;
+    font:   inherit;
+    border-right:   1px solid #f1647c;
+}
+.toolbar button:last-of-type {
+    border-right:   none;
+}
+.toolbar button:hover {
+    text-decoration:    underline;
+}
+.toolbar button:active {
+    font-weight:    bold;
+}
+

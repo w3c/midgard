@@ -7,12 +7,17 @@ import assign from "object-assign";
 require("isomorphic-fetch");
 
 let utils = require("../utils")
+,   _user = null
 ,   _loggedIn = null
+,   apiUser = utils.endpoint("api/user")
 ,   LoginStore = module.exports = assign({}, EventEmitter.prototype, {
         emitChange: function () { this.emit("change"); }
     ,   addChangeListener: function (cb) { this.on("change", cb); }
     ,   removeChangeListener: function (cb) { this.removeListener("change", cb); }
 
+    ,   getUser: function () {
+            return _user;
+        }
     ,   isLoggedIn: function () {
             return _loggedIn;
         }
@@ -22,28 +27,61 @@ let utils = require("../utils")
 LoginStore.dispatchToken = DashboardDispatch.register((action) => {
     switch (action.type) {
         case "login":
-            // XXX needs to work with pheme
-            //  this actually probably needs to take info, submit it, etc.
-            //  we probably need a separate method to check login
-            // fetch(pp + "api/logged-in", { credentials: "include" })
-            //     .then(utils.jsonHandler)
-            //     .then((data) => {
-            //         _loggedIn = data.ok;
-            //         LoginStore.emitChange();
-            //     })
-            //     .catch(utils.catchHandler);
+            fetch(  apiUser
+                , {
+                    credentials:    "include"
+                ,   mode:           "cors"
+                ,   method:         "post"
+                ,   headers:        { "Content-Type": "application/json" }
+                ,   body:   JSON.stringify({
+                                username:   action.username
+                            ,   password:   action.password
+                            })
+                })
+                .then(utils.jsonHandler)
+                .then((data) => {
+                    if (data.username) {
+                        _loggedIn = true;
+                        _user = data;
+                    }
+                    else {
+                        _loggedIn = false;
+                        _user = null;
+                    }
+                    LoginStore.emitChange();
+                })
+                .catch(utils.catchHandler);
+            break;
+        case "load-user":
+            fetch(apiUser, { credentials: "include", mode: "cors" })
+                .then(utils.jsonHandler)
+                .then((data) => {
+                    if (data.username) {
+                        _loggedIn = true;
+                        _user = data;
+                    }
+                    else {
+                        _loggedIn = false;
+                        _user = null;
+                    }
+                    LoginStore.emitChange();
+                })
+                .catch(utils.catchHandler);
             break;
         case "logout":
-            // XXX needs to work with pheme
-            // fetch(pp + "api/logout", { credentials: "include" })
-            //     .then(utils.jsonHandler)
-            //     .then((data) => {
-            //         if (!data.ok) throw "Logout failed";
-            //         _loggedIn = false;
-            //         _admin = false;
-            //         LoginStore.emitChange();
-            //     })
-            //     .catch(utils.catchHandler);
+            fetch(  apiUser
+                , {
+                    credentials:    "include"
+                ,   mode:           "cors"
+                ,   method:         "delete"
+                })
+                .then(utils.jsonHandler)
+                .then(() => {
+                    _loggedIn = false;
+                    _user = null;
+                    LoginStore.emitChange();
+                })
+                .catch(utils.catchHandler);
             break;
     }
 });

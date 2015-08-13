@@ -13,6 +13,10 @@ module.exports = {
 ,   pathPrefix: () => {
         return config.pathPrefix;
     }
+,   endpoint: (str) => {
+        str = str.replace(/^\//, "");
+        return config.api + config.pathPrefix + str;
+    }
 ,   val:    (ref) => {
         let el = React.findDOMNode(ref)
         ,   value

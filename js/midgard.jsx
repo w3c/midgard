@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import { Router, Route, Link } from "react-router";
+import { Router, Route } from "react-router";
 import BrowserHistory from "react-router/lib/BrowserHistory";
 
 import Application from "../components/application.jsx";
@@ -9,6 +9,9 @@ import Row from "../components/row.jsx";
 import Col from "../components/col.jsx";
 import Spinner from "../components/spinner.jsx";
 import FlashList from "../components/flash-list.jsx";
+
+import Login from "./login.jsx";
+import Toolbar from "./toolbar.jsx";
 
 import UserActions from "./actions/user";
 import LoginStore from "./stores/login";
@@ -31,7 +34,7 @@ class W3CDashboard extends React.Component {
     }
     componentDidMount () {
         LoginStore.addChangeListener(this._onChange.bind(this));
-        if (!this.state.loggedIn) UserActions.login();
+        UserActions.loadUser();
     }
     componentWillUnmount () {
         LoginStore.removeChangeListener(this._onChange.bind(this));
@@ -42,32 +45,24 @@ class W3CDashboard extends React.Component {
 
     render () {
         let st = this.state
-        ,   nav
+        ,   toolbar
         ,   body
         ;
         // when logged in show an actual menu and content
         if (st.loggedIn === true) {
-            // nav = <Col className="nav">
-            //         <NavBox title="Repositories">
-            //             <NavItem><Link to={`${pp}repos`}>List Repositories</Link></NavItem>
-            //             <NavItem><Link to={`${pp}repo/new`}>New Repository</Link></NavItem>
-            //             <NavItem><Link to={`${pp}repo/import`}>Import Repository</Link></NavItem>
-            //         </NavBox>
-            //         <NavBox title="Pull Requests">
-            //             <NavItem><Link to={`${pp}pr/open`}>Currently Open</Link></NavItem>
-            //             <NavItem><Link to={`${pp}pr/last-week`}>Active Last Week</Link></NavItem>
-            //         </NavBox>
-            //         {admin}
-            //         <NavBox title="User">
-            //             <NavItem><LogoutButton/></NavItem>
-            //         </NavBox>
-            //     </Col>;
-            // body = <Col>{ this.props.children || <Welcome/> }</Col>;
+            // XXX
+            //  nav has the configuration and the logout button
+            //  body has a row, with a col for MailboxList and a col for ShowMailbox
+            toolbar = <Toolbar/>
+            body = <Row>
+                    <Col className="mbx-list"></Col>
+                    <Col className="mbx-show"></Col>
+                </Row>
+            ;
         }
         // when logged out off to log in
         else if (st.loggedIn === false) {
-            // nav = <Col className="nav"><NavBox title="Login"/></Col>;
-            // body = <Col><LoginWelcome/></Col>;
+            body = <Login/>;
         }
         // while we don't know if we're logged in or out, spinner
         else {
@@ -75,7 +70,7 @@ class W3CDashboard extends React.Component {
         }
         return <Application title="W3C Dashboard">
                   <FlashList store={MessageStore} actions={MessageActions}/>
-                  {nav}
+                  {toolbar}
                   {body}
                 </Application>
         ;
@@ -84,19 +79,7 @@ class W3CDashboard extends React.Component {
 
 React.render(
     <Router history={new BrowserHistory}>
-        <Route path={pp} component={W3CDashboard}>
-        </Route>
+        <Route path={pp} component={W3CDashboard}></Route>
     </Router>
 ,   document.body
 );
-
-// <Route path="repo/:mode" component={RepoManager}/>
-// <Route path="repos" component={RepoList}/>
-// <Route path="pr/id/:owner/:shortName/:num" component={PRViewer}/>
-// <Route path="pr/open" component={PROpen}/>
-// <Route path="pr/last-week" component={PRLastWeek}/>
-// <Route path="admin/add-user" component={PickUser}/>
-// <Route path="admin/users" component={AdminUsers}/>
-// <Route path="admin/user/:username" component={EditUser}/>
-// <Route path="admin/user/:username/add" component={AddUser}/>
-// <Route path="admin/groups" component={AdminGroups}/>
