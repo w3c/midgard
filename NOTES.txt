@@ -16,6 +16,7 @@ MAILBOX:
     - drop the widgets ideas
 
 DB:
+    - kill all the old DBs, and just have a store that's for Couch
     - have the DB be configured when run, not on load
 
 PHEME:

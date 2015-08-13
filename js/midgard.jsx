@@ -53,7 +53,7 @@ class W3CDashboard extends React.Component {
             // XXX
             //  nav has the configuration and the logout button
             //  body has a row, with a col for MailboxList and a col for ShowMailbox
-            toolbar = <Toolbar/>
+            toolbar = <Toolbar/>;
             body = <Row>
                     <Col className="mbx-list"></Col>
                     <Col className="mbx-show"></Col>
@@ -69,8 +69,8 @@ class W3CDashboard extends React.Component {
             body = <Spinner prefix={pp}/>;
         }
         return <Application title="W3C Dashboard">
-                  <FlashList store={MessageStore} actions={MessageActions}/>
                   {toolbar}
+                  <FlashList store={MessageStore} actions={MessageActions}/>
                   {body}
                 </Application>
         ;

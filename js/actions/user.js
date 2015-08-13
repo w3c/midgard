@@ -11,4 +11,10 @@ module.exports = {
 ,   logout:  function () {
         DashboardDispatch.dispatch({ type: "logout" });
     }
+,   addFilter:  function (id) {
+        DashboardDispatch.dispatch({ type: "add-filter", id: id });
+    }
+,   removeFilter:  function (id) {
+        DashboardDispatch.dispatch({ type: "remove-filter", id: id });
+    }
 };
