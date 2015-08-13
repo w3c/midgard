@@ -58,6 +58,7 @@ export default class Toolbar extends React.Component {
             }
             else {
                 prefs = <div className="prefs">
+                        <h2>Pick the filters you wish to subscribe to</h2>
                         {
                             Object.keys(st.allFilters)
                                 .map((id) => {
