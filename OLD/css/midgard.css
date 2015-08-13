@@ -1,0 +1,255 @@
+
+
+/*
+    ---- FONTS -------------------------------------------------------------------------------------
+*/
+@font-face {
+    font-family: "Source Sans";
+    src: url("../fonts/sourcesanspro-regular-webfont.eot");
+    src: url("../fonts/sourcesanspro-regular-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-regular-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-regular-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-regular-webfont.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Source Sans";
+    src: url("../fonts/sourcesanspro-italic-webfont.eot");
+    src: url("../fonts/sourcesanspro-italic-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-italic-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-italic-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-italic-webfont.ttf") format("truetype");
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: "Source Sans";
+    src: url("../fonts/sourcesanspro-bold-webfont.eot");
+    src: url("../fonts/sourcesanspro-bold-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-bold-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-bold-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-bold-webfont.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Source Sans";
+    src: url("../fonts/sourcesanspro-bolditalic-webfont.eot");
+    src: url("../fonts/sourcesanspro-bolditalic-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-bolditalic-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-bolditalic-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-bolditalic-webfont.ttf") format("truetype");
+    font-weight: bold;
+    font-style: italic;
+}
+@font-face {
+    font-family: "Source Sans";
+    src: url("../fonts/sourcesanspro-extralight-webfont.eot");
+    src: url("../fonts/sourcesanspro-extralight-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-extralight-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-extralight-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-extralight-webfont.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Source Sans";
+    src: url("../fonts/sourcesanspro-extralightitalic-webfont.eot");
+    src: url("../fonts/sourcesanspro-extralightitalic-webfont.eot?#iefix") format("embedded-opentype"),
+         url("../fonts/sourcesanspro-extralightitalic-webfont.woff2") format("woff2"),
+         url("../fonts/sourcesanspro-extralightitalic-webfont.woff") format("woff"),
+         url("../fonts/sourcesanspro-extralightitalic-webfont.ttf") format("truetype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+/*
+    ---- GLOBALS -----------------------------------------------------------------------------------
+*/
+body {
+    font-family:    "Source Sans";
+/*    background: url("/img/honeycomb.svg") #343434;*/
+    background: #343434;
+}
+
+img.loading {
+    position:   fixed;
+    top:    50%;
+    left:   50%;
+}
+
+/*
+    ---- HEADER ------------------------------------------------------------------------------------
+*/
+header {
+    text-align: right;
+    background: url("../img/criss-cross.svg") darkorange;
+    line-height:    0;
+    border-bottom:  3px solid oldlace;
+}
+header img {
+    padding: 5px 10px;
+    background: #343434;
+}
+
+/*
+    ---- NAVIGATION --------------------------------------------------------------------------------
+*/
+nav {
+    background: white;
+    border-radius:  5px;
+    padding:    5px 1rem;
+    margin: 0 16px 16px 16px;
+}
+nav ul {
+    list-style-type:    none;
+    padding:    0;
+    margin: 0;
+    text-align: right;
+}
+nav ul li {
+    display:    inline-block;
+}
+nav button {
+    padding:    5px 5px 0 5px;
+    margin: 0 0 0 5px;
+    border: none;
+    background: transparent;
+}
+nav button:hover {
+    background: #ddd;
+}
+
+/*
+    ---- COLUMNS -----------------------------------------------------------------------------------
+*/
+main {
+    padding-top:    1rem;
+}
+.row {
+    margin-right:   8px;
+    margin-left:    8px;
+}
+
+/*
+    ---- WIDGETS -----------------------------------------------------------------------------------
+*/
+.widget {
+    background: #fff;
+    border: 1px solid oldlace;
+    margin-bottom:  1rem;
+}
+.widget h2 {
+    font-weight:    normal;
+    padding:    5px 10px 0 10px;
+    margin: 0 0 10px 0;
+    border-bottom:  1px solid darkorange;
+}
+.widget.message.error {
+    border-color:   #ebccd1;
+}
+.widget.message.error h2 {
+    border-bottom-color:    #ebccd1;
+    color:  #900;
+    background: #f2dede;
+}
+.widget .content {
+    height: 400px;
+    overflow:   auto;
+    padding:    0 10px 10px 10px;
+}
+.widget.message .content {
+    height: 200px;
+}
+.widget button.close {
+    font-size:  0.7em;
+    font-weight:    bold;
+    border-radius:  50%;
+    border: none;
+    color:  #666;
+    background: #fff;
+    padding:    3px 5px;
+    float:  right;
+    margin: -3.6em 5px 0 0;
+}
+.widget.message.error button.close {
+    color:  #900;
+}
+.widget.message.error button.close:hover {
+    color:  #fff;
+    background: #900;
+}
+
+/*
+    ---- EVENTS ------------------------------------------------------------------------------------
+*/
+ul.event-list {
+    list-style-type:    none;
+    padding:    0;
+    margin: 0;
+}
+ul.event-list > li {
+    display:    block;
+    padding:    5px 0;
+    border-bottom:  1px solid silver;
+}
+ul.event-list > li:last-of-type {
+    border-bottom:  none;
+}
+.content div.paginate {
+    text-align: right;
+}
+ul.event-list img {
+    max-width:  100%;
+}
+ul.event-list a {
+    color:  darkorange;
+    text-decoration: none;
+}
+ul.event-list pre {
+    white-space: pre-wrap;
+}
+ul.event-list div.meta {
+    font-size:  0.8em;
+    color:  #666;
+    text-align: right;
+}
+ul.event-list p:first-of-type {
+    margin-top: 0;
+}
+ul.event-list .more {
+    display:    none;
+}
+ul.event-list .gh-user {
+    font-weight:    bold;
+}
+ul.event-list .issue-title {
+    font-weight:    bold;
+}
+ul.event-list .label {
+    display:    inline-block;
+    font-size:  0.8em;
+    color:  white;
+    padding:    0 5px;
+    border-radius:  5px;
+}
+ul.commits-list {
+    padding-left:   15px;
+}
+
+/*
+    ---- FORMS -------------------------------------------------------------------------------------
+*/
+.content label {
+    display:    block;
+}
+.content input[type=text], .content input[type=password] {
+    display:    block;
+    width:  95%;
+    margin-bottom:  10px;
+}
+.content .action {
+    width:  95%;
+    text-align: right;
+}

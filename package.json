@@ -30,9 +30,9 @@
   "scripts": {
       "build-js-debug": "browserify app.jsx --debug | exorcist js/midgard.js.map > js/midgard.js",
       "build-js": "browserify app.jsx | uglifyjs - -c warnings=false -m > js/midgard.min.js",
-      "watch-js": "watchify app.jsx --verbose --ignore-watch=\"**/node_modules/**\" --ignore-watch=\"**/js/**\" -o 'uglifyjs - -c warnings=false -m > js/midgard.min.js'",
-      "build-css": "cleancss -o ./css/midgard.min.css app.css",
-      "watch-css": "nodemon --ignore ./css/ -e css --exec 'npm run build-css'",
+      "watch-js": "watchify js/midgard.jsx --verbose --ignore-watch=\"**/node_modules/**\" --ignore-watch=\"**/js/midgard.min.js\" -o 'uglifyjs - -c warnings=false -m > js/midgard.min.js'",
+      "build-css": "cleancss -o ./css/midgard.min.css ./css/midgard.css",
+      "watch-css": "nodemon --ignore ./css/midgard.min.css -e css --exec 'npm run build-css'",
       "build": "npm run build-css && npm run build-js",
       "watch": "npm run watch-css & npm run watch-js"
   }
