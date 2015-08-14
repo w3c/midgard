@@ -3,6 +3,7 @@ import React from "react";
 
 import FilterStore from "./stores/filter";
 import ConfigurationStore from "./stores/configuration";
+import MailboxActions from "./actions/mailbox";
 
 import FilterSelector from "./filter-selector.jsx";
 
@@ -11,12 +12,14 @@ export default class FilterList extends React.Component {
         super(props);
         this.state = {
             userFilters:    FilterStore.getFilters()
-        ,   allFilters: ConfigurationStore.getFilters()
+        ,   allFilters:     ConfigurationStore.getFilters()
         };
     }
     componentDidMount () {
         FilterStore.addChangeListener(this._onChange.bind(this));
         ConfigurationStore.addChangeListener(this._onChange.bind(this));
+        let sid = this.getSelected();
+        if (sid) MailboxActions.selectMailbox(sid); // code smell
     }
     componentWillUnmount () {
         FilterStore.removeChangeListener(this._onChange.bind(this));
@@ -33,14 +36,13 @@ export default class FilterList extends React.Component {
         this.refs["fs-" + id].select();
     }
     setSelected (id) {
-        console.log("setting", id);
         localStorage.setItem("selectedID", id);
+        MailboxActions.selectMailbox(id);
     }
     removeSelected () {
         localStorage.removeItem("selectedID");
     }
     getSelected () {
-        console.log("localStorage", localStorage.getItem("selectedID"));
         return localStorage.getItem("selectedID");
     }
 
