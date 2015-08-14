@@ -7,45 +7,30 @@ import FilterToggle from "./filter-toggle.jsx";
 import Logout from "./logout-button.jsx";
 
 import FilterStore from "./stores/filter";
-
-//  /!\  magically create a global fetch
-require("isomorphic-fetch");
-
-let utils = require("./utils")
-,   apiFilters = utils.endpoint("api/events")
-;
+import ConfigurationStore from "./stores/configuration";
 
 export default class Toolbar extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            loading:        false
-        ,   showing:        false
+            showing:        false
         ,   userFilters:    FilterStore.getFilters()
-        ,   allFilters:     null
+        ,   allFilters:     ConfigurationStore.getFilters()
         };
     }
     componentDidMount () {
         FilterStore.addChangeListener(this._onChange.bind(this));
+        ConfigurationStore.addChangeListener(this._onChange.bind(this));
     }
     componentWillUnmount () {
         FilterStore.removeChangeListener(this._onChange.bind(this));
+        ConfigurationStore.removeChangeListener(this._onChange.bind(this));
     }
     _onChange () {
-        this.setState({ userFilters: FilterStore.getFilters() });
+        this.setState({ userFilters: FilterStore.getFilters(), allFilters: ConfigurationStore.getFilters() });
     }
-    _showFilters () {
-        if (this.state.showing) return this.setState({ showing: false, loading: false });
-        this.setState({ showing: true, loading: true });
-        fetch(apiFilters, { credentials: "include", mode: "cors" })
-            .then(utils.jsonHandler)
-            .then((data) => {
-                this.setState({
-                    loading:    false
-                ,   allFilters: data
-                });
-            })
-            .catch(utils.catchHandler);
+    _toggleFilters () {
+        this.setState({ showing: !this.state.showing });
     }
 
     render () {
@@ -70,7 +55,7 @@ export default class Toolbar extends React.Component {
             }
         }
         return <div className="toolbar">
-                <button onClick={this._showFilters.bind(this)}>Configure</button>
+                <button onClick={this._toggleFilters.bind(this)}>Configure</button>
                 <Logout/>
                 {prefs}
             </div>

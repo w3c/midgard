@@ -12,6 +12,7 @@ import FlashList from "../components/flash-list.jsx";
 
 import Login from "./login.jsx";
 import Toolbar from "./toolbar.jsx";
+import FilterList from "./filter-list.jsx";
 
 import UserActions from "./actions/user";
 import LoginStore from "./stores/login";
@@ -19,12 +20,22 @@ import LoginStore from "./stores/login";
 import MessageActions from "./actions/messages";
 import MessageStore from "./stores/message";
 
+import ConfigurationActions from "./actions/configuration";
+import ConfigurationStore from "./stores/configuration";
+
 let utils = require("./utils")
 ,   pp = utils.pathPrefix()
 ;
 
 function getState () {
-    return { loggedIn: LoginStore.isLoggedIn() };
+    var st = {
+        loggedIn: LoginStore.isLoggedIn()
+    ,   allFilters: ConfigurationStore.getFilters()
+    };
+    if (st.loggedIn === null || st.allFilters === null) st.status = "loading";
+    else if (st.loggedIn) st.status = "ok";
+    else st.status = "login-required";
+    return st;
 }
 
 class W3CDashboard extends React.Component {
@@ -34,10 +45,13 @@ class W3CDashboard extends React.Component {
     }
     componentDidMount () {
         LoginStore.addChangeListener(this._onChange.bind(this));
+        ConfigurationStore.addChangeListener(this._onChange.bind(this));
         UserActions.loadUser();
+        ConfigurationActions.loadConfiguration();
     }
     componentWillUnmount () {
         LoginStore.removeChangeListener(this._onChange.bind(this));
+        ConfigurationStore.removeChangeListener(this._onChange.bind(this));
     }
     _onChange () {
         this.setState(getState());
@@ -48,25 +62,22 @@ class W3CDashboard extends React.Component {
         ,   toolbar
         ,   body
         ;
-        // when logged in show an actual menu and content
-        if (st.loggedIn === true) {
+        if (st.status === "loading") {
+            body = <Spinner prefix={pp}/>;
+        }
+        else if (st.status === "login-required") {
+            body = <Login/>;
+        }
+        else {
             // XXX
             //  nav has the configuration and the logout button
             //  body has a row, with a col for MailboxList and a col for ShowMailbox
             toolbar = <Toolbar/>;
             body = <Row>
-                    <Col className="mbx-list"></Col>
+                    <Col className="mbx-list"><FilterList/></Col>
                     <Col className="mbx-show"></Col>
                 </Row>
             ;
-        }
-        // when logged out off to log in
-        else if (st.loggedIn === false) {
-            body = <Login/>;
-        }
-        // while we don't know if we're logged in or out, spinner
-        else {
-            body = <Spinner prefix={pp}/>;
         }
         return <Application title="W3C Dashboard">
                   {toolbar}

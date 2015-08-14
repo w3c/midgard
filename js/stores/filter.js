@@ -26,6 +26,7 @@ LoginStore.addChangeListener(function () {
     if (LoginStore.isLoggedIn()) {
         _user = LoginStore.getUser();
         _filters = _user.filters || {};
+        // XXX this does not dispatch change
     }
 });
 
