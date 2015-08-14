@@ -11,6 +11,7 @@ export default class FilterSelector extends React.Component {
     select () { this.setState({ selected: true }); }
     unselect () { this.setState({ selected: false }); }
     _onClick () {
+        if (this.state.selected) return;
         this.props.onClick(this.props.id);
     }
 

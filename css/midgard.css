@@ -249,5 +249,44 @@ td.good, td.bad {
 
 /* columns */
 .mbx-list {
-    width:  200px;
+    width:  250px;
+    border-top: 1px solid silver;
+}
+
+
+/* mailbox style */
+.mbx-list ul {
+    list-style-type:    none;
+    margin: 0;
+    padding:    0;
+}
+.mbx-list button {
+    display:    block;
+    width:  100%;
+    text-align: left;
+    border-radius:  0;
+    padding:    10px;
+    border: 1px solid silver;
+    border-top: none;
+    border-bottom-color:    #f1647c;
+    background: #fff;
+    color:  #000;
+}
+.mbx-list li:last-of-type button {
+    border-bottom-color:    silver;
+}
+.mbx-list button:hover {
+    background: #f1647c;
+    color:  #fff;
+}
+.mbx-list li.selected button {
+    font-weight:    bold;
+    color:  #f1647c;
+    background: #eee;
+    border-left:   5px solid #f1647c;
+    padding-left:   5px;
+}
+.mbx-list p {
+    padding:    10px;
+    border-bottom:  1px solid silver;
 }

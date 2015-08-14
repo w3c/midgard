@@ -27,14 +27,14 @@ export default class FilterList extends React.Component {
         this.setState({ userFilters: FilterStore.getFilters(), allFilters: ConfigurationStore.getFilters() });
     }
     _onSelect (id) {
-        if (this.selectedID) this.refs("fs-" + this.selectedID).unselect();
+        if (this.selectedID) this.refs["fs-" + this.selectedID].unselect();
         this.selectedID = id;
-        this.refs("fs-" + id).select();
+        this.refs["fs-" + id].select();
     }
 
     render () {
         let st = this.state;
-        if (st.userFilters.length === 0) {
+        if (Object.keys(st.userFilters).length === 0) {
             return <p>
                     You have no configured event lists to follow; add some using the “Configure”
                     button above.

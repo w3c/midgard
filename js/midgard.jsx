@@ -70,7 +70,6 @@ class W3CDashboard extends React.Component {
         }
         else {
             // XXX
-            //  nav has the configuration and the logout button
             //  body has a row, with a col for MailboxList and a col for ShowMailbox
             toolbar = <Toolbar/>;
             body = <Row>
