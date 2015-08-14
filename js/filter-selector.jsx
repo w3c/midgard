@@ -5,7 +5,7 @@ export default class FilterSelector extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            selected:    false
+            selected:    props.selected
         };
     }
     select () { this.setState({ selected: true }); }
@@ -13,6 +13,11 @@ export default class FilterSelector extends React.Component {
     _onClick () {
         if (this.state.selected) return;
         this.props.onClick(this.props.id);
+    }
+    componentWillUnmount () {
+        // notify our death
+        // this is all a bad code smell
+        if (this.state.selected) this.props.onClick(null);
     }
 
     render () {

@@ -9,7 +9,6 @@ import FilterSelector from "./filter-selector.jsx";
 export default class FilterList extends React.Component {
     constructor (props) {
         super(props);
-        this.selectedID = null;
         this.state = {
             userFilters:    FilterStore.getFilters()
         ,   allFilters: ConfigurationStore.getFilters()
@@ -27,13 +26,28 @@ export default class FilterList extends React.Component {
         this.setState({ userFilters: FilterStore.getFilters(), allFilters: ConfigurationStore.getFilters() });
     }
     _onSelect (id) {
-        if (this.selectedID) this.refs["fs-" + this.selectedID].unselect();
-        this.selectedID = id;
+        if (id === null) return this.removeSelected();
+        let sid = this.getSelected();
+        if (sid) this.refs["fs-" + sid].unselect();
+        this.setSelected(id);
         this.refs["fs-" + id].select();
+    }
+    setSelected (id) {
+        console.log("setting", id);
+        localStorage.setItem("selectedID", id);
+    }
+    removeSelected () {
+        localStorage.removeItem("selectedID");
+    }
+    getSelected () {
+        console.log("localStorage", localStorage.getItem("selectedID"));
+        return localStorage.getItem("selectedID");
     }
 
     render () {
-        let st = this.state;
+        let st = this.state
+        ,   comp = this
+        ;
         if (Object.keys(st.userFilters).length === 0) {
             return <p>
                     You have no configured event lists to follow; add some using the “Configure”
@@ -45,7 +59,7 @@ export default class FilterList extends React.Component {
                 {
                     Object.keys(st.userFilters)
                         .map((id) => {
-                            return <FilterSelector key={id} id={id} selected={id === st.selectedID}
+                            return <FilterSelector key={id} id={id} selected={id === comp.getSelected()}
                                                     ref={"fs-" + id} {...st.allFilters[id]}
                                                     onClick={this._onSelect.bind(this)}/>;
                         })
