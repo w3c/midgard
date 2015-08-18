@@ -6,7 +6,7 @@ REACTIFY:
     ✓ have the root render as a react component
     ✓ get the login logic from AN and port it to the model we have here
     ✓ render the login
-    - start porting over the rest piece by piece
+    ✓ start porting over the rest piece by piece
 
 MAILBOX:
     - keep track of last seen
@@ -20,7 +20,6 @@ DB:
     - have the DB be configured when run, not on load
 
 PHEME:
-    - have loaders be in charge of knowing when they've already seen a given item
     - add support for minutes using https://cvs.w3.org/recent-commits?user=swick
     - add the W3C RSS
 
