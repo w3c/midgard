@@ -240,6 +240,7 @@ td.good, td.bad {
     height: 100px;
     border: 1px solid #f1647c;
     margin: 10px;
+    vertical-align: top;
 }
 .prefs .filter h3 {
     margin: 5px;

@@ -33,7 +33,6 @@ export default class ShowGitHub extends React.Component {
                 )
                 .then(utils.jsonHandler)
                 .then((data) => {
-                    console.log(data);
                     comp.setState({
                         html:       data.body_html
                     ,   loading:    false
