@@ -21,31 +21,12 @@ DB:
 
 PHEME:
     - add support for minutes using https://cvs.w3.org/recent-commits?user=swick
-    - add the W3C RSS
+    ✓ add the W3C RSS
 
 
 
 TODO:
-    - have all data access go through Fetch instead of the horrible jQuery API
-    - add a "see more" link to those events in which it makes sense, and get rendered HTML as in
-      https://developer.github.com/v3/media/. Or even just load it by default (from the client).
-    - switch to the mailbox style, it's much cleaner
+    ✓ have all data access go through Fetch instead of the horrible jQuery API
+    ✓ switch to the mailbox style, it's much cleaner
     - login errors should look like this:
         https://twitter.com/dontcallmeDOM/status/605344338764279809
-
-
-LOAD:
-    ✓ #fetch user
-
-LOGIN:
-    - load specific layout with just one widget
-    - /api/login
-    - if successful, go to fetch user
-
-FETCH USER:
-    ✓ /api/user
-    - if none: #login
-    - get layout
-    - if none: default layout
-    - instantiate layout
-    - instantiate widgets

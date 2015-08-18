@@ -25,6 +25,7 @@ MessageStore.dispatchToken = DashboardDispatch.register((action) => {
                 id:         ++_counter
             ,   message:    msg
             ,   type:       action.type
+            ,   mode:       action.mode
             });
             MessageStore.emitChange();
             break;

@@ -1,6 +1,10 @@
 
 import React from "react";
 
+let utils = require("../js/utils")
+,   pp = utils.pathPrefix()
+;
+
 // a very simple flash error
 export default class FlashList extends React.Component {
     // receive a store to listen to
@@ -35,6 +39,13 @@ export default class FlashList extends React.Component {
                                             <p>
                                                 {msg.message}
                                             </p>
+                                            {
+                                                msg.mode === "dom" ?
+                                                    <p>
+                                                      <img src={pp + "img/error.jpg"} width="400" height="300" alt="Error"/>
+                                                    </p> :
+                                                    ""
+                                            }
                                         </div>
                                 ;
                             }

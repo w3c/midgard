@@ -2,9 +2,9 @@
 import DashboardDispatch from "../dispatcher";
 
 module.exports = {
-    error:  function (msg) {
+    error:  function (msg, opts) {
         console.error(msg);
-        DashboardDispatch.dispatch({ type: "error", message: msg });
+        DashboardDispatch.dispatch({ type: "error", message: msg, mode: opts && opts.mode ? opts.mode : ""  });
     }
 ,   success:    function (msg) {
         console.log(msg);
