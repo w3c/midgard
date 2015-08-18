@@ -2,6 +2,7 @@
 import React from "react";
 
 import Spinner from "../components/spinner.jsx";
+import ShowGitHub from "./show-github.jsx";
 
 import MailboxStore from "./stores/mailbox";
 
@@ -84,7 +85,8 @@ export default class EventList extends React.Component {
                                             <div dangerouslySetInnerHTML={cleanup(p.summary || p.content, ev.origin)}></div>
                                 </div>;
                             }
-                            // return <pre key={ev.id}>{JSON.stringify(ev, null, 4)}</pre>;
+                            else if (ev.origin === "github") return <ShowGitHub {...ev}/>;
+                            else return <pre key={ev.id}>{JSON.stringify(ev, null, 4)}</pre>;
                         }
                 })
             }
