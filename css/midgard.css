@@ -309,4 +309,19 @@ td.good, td.bad {
     margin-bottom:  50px;
 }
 
-
+.email-hidden-toggle {
+    display:    none;
+}
+.gh-user {
+    font-weight:    bold;
+}
+.message .content {
+    border-left:    10px solid silver;
+    padding-left:   20px;
+}
+.message .content ul {
+    padding-left:   10px;
+}
+.message .content blockquote {
+    font-style: italic;
+}

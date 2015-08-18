@@ -74,7 +74,7 @@ export default class EventList extends React.Component {
                                 return <div className="message" key={ev.id}>
                                             <div className="meta">
                                               <time dateTime={ev.time}>{ev.time}</time>
-                                              •
+                                              {" • "}
                                               <a href={p.link} target="_blank">#</a>
                                             </div>
                                             {
