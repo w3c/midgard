@@ -11,9 +11,9 @@ REACTIFY:
 MAILBOX:
     - keep track of last seen
     - show badges
-    - show list of mailboxes that depends on configured filters
-    - store/load filter preferences from user
-    - drop the widgets ideas
+    ✓ show list of mailboxes that depends on configured filters
+    ✓ store/load filter preferences from user
+    ✓ drop the widgets ideas
 
 DB:
     - kill all the old DBs, and just have a store that's for Couch

@@ -1,6 +1,9 @@
 
 @import "../node_modules/normalize.css/normalize.css";
 @import "../node_modules/ungrid/ungrid.css";
+.col {
+    vertical-align: top;
+}
 
 /* fonts */
 
@@ -225,6 +228,7 @@ td.good, td.bad {
 .prefs {
     text-align: left;
     border: 1px solid silver;
+    margin-bottom:  30px;
 }
 .prefs h2 {
     font-size: 24px;
@@ -290,3 +294,19 @@ td.good, td.bad {
     padding:    10px;
     border-bottom:  1px solid silver;
 }
+
+.messages {
+    padding:    0 30px;
+}
+.messages .meta {
+    text-align: right;
+    background: #eee;
+    padding:    5px 10px 2px 10px;
+    margin-bottom:  10px;
+}
+.messages .message {
+    border-bottom:  1px solid silver;
+    margin-bottom:  50px;
+}
+
+

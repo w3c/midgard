@@ -19,6 +19,8 @@ export default class FilterList extends React.Component {
         FilterStore.addChangeListener(this._onChange.bind(this));
         ConfigurationStore.addChangeListener(this._onChange.bind(this));
         let sid = this.getSelected();
+        // XXX this is bad because we drive it but we don't respond to it
+        // this project is a good candidate for Redux, if there's a refactor
         if (sid) MailboxActions.selectMailbox(sid); // code smell
     }
     componentWillUnmount () {

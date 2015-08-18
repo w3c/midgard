@@ -13,6 +13,7 @@ import FlashList from "../components/flash-list.jsx";
 import Login from "./login.jsx";
 import Toolbar from "./toolbar.jsx";
 import FilterList from "./filter-list.jsx";
+import EventList from "./event-list.jsx";
 
 import UserActions from "./actions/user";
 import LoginStore from "./stores/login";
@@ -74,7 +75,7 @@ class W3CDashboard extends React.Component {
             toolbar = <Toolbar/>;
             body = <Row>
                     <Col className="mbx-list"><FilterList/></Col>
-                    <Col className="mbx-show"></Col>
+                    <Col className="mbx-show"><EventList/></Col>
                 </Row>
             ;
         }
