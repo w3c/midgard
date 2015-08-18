@@ -76,6 +76,7 @@ export default class ShowGitHub extends React.Component {
         else if (type === "issue_comment") link = p.comment.html_url;
         else if (type === "pull_request") link = p.pull_request.html_url;
         else if (type === "push") link = p.compare;
+        else if (type === "fork") link = p.forkee.html_url;
         
         // some types have actual content payloads
         if (st.loading) content = <Spinner/>;
@@ -146,6 +147,17 @@ export default class ShowGitHub extends React.Component {
                     </ul>
             ;
             style.background = background("repo-push");
+        }
+        else if (type === "fork") {
+            intro = <p>
+                      <span className="gh-user">@{p.sender}</span> <em>forked</em> repository
+                      {" "}
+                      <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a> to
+                      {" "} 
+                      <a href={p.forkee.html_url} target="_blank">{p.forkee.full_name}</a>.
+                    </p>
+            ;
+            style.background = background("repo-forked");
         }
         else {
             intro = <p>Unknown GH event type</p>;
