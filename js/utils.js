@@ -15,7 +15,7 @@ module.exports = {
     }
 ,   endpoint: (str) => {
         str = str.replace(/^\//, "");
-        return config.api + config.pathPrefix + str;
+        return config.api + str;
     }
 ,   val:    (ref) => {
         let el = React.findDOMNode(ref)
