@@ -7,6 +7,8 @@ import LoginStore from "./login.js";
 //  /!\  magically create a global fetch
 require("isomorphic-fetch");
 
+
+// DRY
 let utils = require("../utils")
 ,   _filters = {}
 ,   _user = null
@@ -26,7 +28,7 @@ LoginStore.addChangeListener(function () {
     if (LoginStore.isLoggedIn()) {
         _user = LoginStore.getUser();
         _filters = _user.filters || {};
-        // XXX this does not dispatch change
+        FilterStore.emitChange();
     }
 });
 

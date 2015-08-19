@@ -10,23 +10,21 @@ REACTIFY:
 
 MAILBOX:
     - keep track of last seen
+        - maybe a single POST with keys all being the filter names, and values the last-seen
+          date stamp. Does a count on the DB, returns the count for each.
+        - use that to poll the DB every ~5 minutes and update the UI. The currently shown view
+          gets some sort of button? Use notification API?
     - show badges
     ✓ show list of mailboxes that depends on configured filters
     ✓ store/load filter preferences from user
     ✓ drop the widgets ideas
+    ✓ merge configuration of sources and event filters list, they really should be edited in just
+      the one place
 
 DB:
-    - kill all the old DBs, and just have a store that's for Couch
-    - have the DB be configured when run, not on load
+    ✓ kill all the old DBs, and just have a store that's for Couch
+    ✓ have the DB be configured when run, not on load
 
 PHEME:
-    - add support for minutes using https://cvs.w3.org/recent-commits?user=swick
+    ✓ add support for minutes using https://cvs.w3.org/recent-commits?user=swick
     ✓ add the W3C RSS
-
-
-
-TODO:
-    ✓ have all data access go through Fetch instead of the horrible jQuery API
-    ✓ switch to the mailbox style, it's much cleaner
-    - login errors should look like this:
-        https://twitter.com/dontcallmeDOM/status/605344338764279809
