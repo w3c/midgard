@@ -51,8 +51,13 @@ export default class EventList extends React.Component {
         fetch(apiEvents + mbx, { credentials: "include", mode: "cors" })
             .then(utils.jsonHandler)
             .then((data) => {
-                var mostRecent = data.payload[0];
-                if (mostRecent) LastSeenActions.sawFilter(mbx, new Date(mostRecent.time));
+                let mostRecent = data.payload[0];
+                if (mostRecent) {
+                    let d = new Date(mostRecent.time);
+                    // up it by one so that the document we're seeing isn't selected.
+                    d = new Date(d.getTime() + 1);
+                    LastSeenActions.sawFilter(mbx, d);
+                }
                 comp.setState({
                     mailbox:    mbx
                 ,   events:     data.payload

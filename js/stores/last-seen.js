@@ -73,6 +73,8 @@ LastSeenStore.dispatchToken = DashboardDispatch.register((action) => {
         case "watch-seen-since":
             LastSeenStore.load();
             checkNewStuff();
+            // check every minute
+            setInterval(checkNewStuff, 60 * 1000);
             break;
         case "saw-filter":
             let d = action.date;
