@@ -14,7 +14,7 @@ export default class FilterSelector extends React.Component {
     select () { this.setState({ selected: true }); }
     unselect () { this.setState({ selected: false }); }
     _onClick () {
-        if (this.state.selected) return;
+        // if (this.state.selected) return; // you can click it if there's new stuff, it reload
         this.props.onClick(this.props.id);
     }
     componentDidMount () {
