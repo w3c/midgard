@@ -291,6 +291,18 @@ td.good, td.bad {
     border-left:   5px solid #f1647c;
     padding-left:   5px;
 }
+.mbx-list button .pill {
+    font-size:  10px;
+    font-weight:    bold;
+    color:  #fff;
+    background: #f1647c;
+    border-radius:  50%;
+    padding:    2px 5px;
+}
+.mbx-list button:hover .pill {
+    color:  #f1647c;
+    background: #fff;
+}
 .mbx-list p {
     padding:    10px;
     border-bottom:  1px solid silver;

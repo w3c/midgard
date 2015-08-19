@@ -4,6 +4,7 @@ import React from "react";
 import FilterStore from "./stores/filter";
 import ConfigurationStore from "./stores/configuration";
 import MailboxActions from "./actions/mailbox";
+import LastSeenActions from "./actions/last-seen";
 
 import FilterSelector from "./filter-selector.jsx";
 
@@ -40,8 +41,11 @@ export default class FilterList extends React.Component {
     setSelected (id) {
         localStorage.setItem("selectedID", id);
         MailboxActions.selectMailbox(id);
+        if (id) LastSeenActions.sawFilter(id);
     }
     removeSelected () {
+        let id = this.getSelected();
+        if (id) LastSeenActions.sawFilter(id);
         localStorage.removeItem("selectedID");
     }
     getSelected () {

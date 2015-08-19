@@ -24,6 +24,9 @@ import MessageStore from "./stores/message";
 import ConfigurationActions from "./actions/configuration";
 import ConfigurationStore from "./stores/configuration";
 
+import LastSeenActions from "./actions/last-seen";
+
+
 let utils = require("./utils")
 ,   pp = utils.pathPrefix()
 ;
@@ -49,6 +52,7 @@ class W3CDashboard extends React.Component {
         ConfigurationStore.addChangeListener(this._onChange.bind(this));
         UserActions.loadUser();
         ConfigurationActions.loadConfiguration();
+        LastSeenActions.startWatching();
     }
     componentWillUnmount () {
         LoginStore.removeChangeListener(this._onChange.bind(this));
