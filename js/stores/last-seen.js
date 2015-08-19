@@ -75,13 +75,13 @@ LastSeenStore.dispatchToken = DashboardDispatch.register((action) => {
             checkNewStuff();
             break;
         case "saw-filter":
-            console.log("getting saw-filter");
             let d = new Date();
             _lastSeen[action.id] = [d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(),
                                     d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(),
                                     d.getUTCMilliseconds()];
+            _filterCounts[action.id] = 0;
             save();
-            console.log(localStorage.getItem("last-seen-filters"));
+            LastSeenStore.emitChange();
             break;
     }
 });
