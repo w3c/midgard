@@ -75,7 +75,7 @@ LastSeenStore.dispatchToken = DashboardDispatch.register((action) => {
             checkNewStuff();
             break;
         case "saw-filter":
-            let d = new Date();
+            let d = action.date;
             _lastSeen[action.id] = [d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate(),
                                     d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(),
                                     d.getUTCMilliseconds()];

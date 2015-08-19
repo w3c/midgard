@@ -5,6 +5,7 @@ import Spinner from "../components/spinner.jsx";
 import ShowGitHub from "./show-github.jsx";
 
 import MailboxStore from "./stores/mailbox";
+import LastSeenActions from "./actions/last-seen";
 
 //  /!\  magically create a global fetch
 require("isomorphic-fetch");
@@ -50,6 +51,8 @@ export default class EventList extends React.Component {
         fetch(apiEvents + mbx, { credentials: "include", mode: "cors" })
             .then(utils.jsonHandler)
             .then((data) => {
+                var mostRecent = data.payload[0];
+                if (mostRecent) LastSeenActions.sawFilter(mbx, new Date(mostRecent.time));
                 comp.setState({
                     mailbox:    mbx
                 ,   events:     data.payload
