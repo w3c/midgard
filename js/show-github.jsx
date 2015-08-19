@@ -8,7 +8,7 @@ require("isomorphic-fetch");
 let utils = require("./utils");
 
 function background (pic) {
-    return "transparent url('" + utils.pathPrefix() + "node_modules/octicons/svg/" + pic + ".svg') no-repeat scroll 0px 7px / 15px 15px;";
+    return "transparent url('" + utils.pathPrefix() + "node_modules/octicons/svg/" + pic + ".svg') no-repeat scroll 0px 7px / 15px 15px";
 }
 
 export default class ShowGitHub extends React.Component {
@@ -136,7 +136,7 @@ export default class ShowGitHub extends React.Component {
                       <a href={p.compare} target="_blank">{p.repository}#{p.ref.replace("refs/heads/", "")}</a>.
                     </p>
             ;
-            content = <ul class='commits-list'>
+            content = <ul className='commits-list'>
                         {
                             p.commits.map((c) => {
                                 let short_sha = c.id.substr(0, 7);

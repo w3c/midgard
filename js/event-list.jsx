@@ -85,7 +85,7 @@ export default class EventList extends React.Component {
                                             <div dangerouslySetInnerHTML={cleanup(p.summary || p.content, ev.origin)}></div>
                                 </div>;
                             }
-                            else if (ev.origin === "github") return <ShowGitHub {...ev}/>;
+                            else if (ev.origin === "github") return <ShowGitHub {...ev} key={ev.id}/>;
                             else return <pre key={ev.id}>{JSON.stringify(ev, null, 4)}</pre>;
                         }
                 })
