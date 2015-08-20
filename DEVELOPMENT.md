@@ -132,26 +132,6 @@ the server code, you want to run:
 This will start a nodemon instance that will monitor the changes you make to the Pheme code, and
 restart it for you.
 
-## Deploying Pheme in Production
-
-You will want a slightly different `config.json`; the one in hatchery is serviceable (it notably has
-the right secret for the W3C hook).
-
-You don't want to use `npm run` in production; instead use pm2. A configuration is provided for it
-in `pm2-production.json` (it's what's used on hatchery).
-
-## Installing Midgard
-
-
-
-When developing client code, you want to run:
-
-    npm run watch
-
-This will also use nodemon to monitor the CSS and JS/JSX to rebuild them as needed. Be warned that 
-the JS build can take a second or two, so if nothing changes because you reload too fast that's why.
-You can `watch-js` and `watch-css` separately if you want to.
-
 One of the issues with developing on one's box is that it is not typically accessible over the Web
 for outside services to interact with. If you are trying to get events from repositories on GitHub,
 you will need to expose yourself to the Web. You may already have your preferred way of doing that,
@@ -163,14 +143,64 @@ through ngrok, just run
 Note that you don't need that for regular development, you only need to be exposed if you want to
 receive GitHub events.
 
-## Production deployment
+## Deploying Pheme in Production
 
-You will want a slightly different `config.json`; the one in hatchery is serviceable.
+You will want a slightly different `config.json`; the one in hatchery is serviceable (it notably has
+the right secret for the W3C hook).
 
 You don't want to use `npm run` in production; instead use pm2. A configuration is provided for it
 in `pm2-production.json` (it's what's used on hatchery).
 
-Make sure you create an admin user as described above.
+## Installing Midgard
+
+It's pretty straightforward:
+
+    git clone https://github.com/w3c/midgard
+    cd midgard
+    npm install -d
+
+Note that even though this is client-side code you *must* install the dependencies *even just to
+deploy it*.
+
+You now need to configure the system so that it can find various bits and pieces. For this create a
+`config.json` at the root, with the following content:
+
+```
+{
+    // This is the URL to the root of the API server, with trailing /.
+    "api":          "http://pheme.bast/"
+    // If Midgard is not running at the root of its host, this is the path to it; otherwise /.
+,   "pathPrefix":   "/"
+}
+```
+
+You then need to run:
+
+    npm run build
+
+(Technically, you only need to run `npm run build-js` as the `config.json` only affects that; but
+given how the JS build dominates the build time it makes no difference.)
+
+That's it, you have a working Midgard, ready to be served. ***IMPORTANT NOTE***: whenever you udpate
+the code, you need to run the build again. That's because the built version is not under version 
+control, because it depends on the small configuration.
+
+When developing the code, you absolutely *do not want to run `npm run build` yourself for every 
+change*. The reason for that is that a full Browserify build can be quite slow. Instead we have a
+Watchify-based command that does incremental building whenever it detects a change. On my laptop
+that's the different between insufferable 5 seconds build time and tolerable 0.2s build time. Just:
+
+    npm run watch
+
+This will build both the CSS and JS/JSX whenever needed.
+
+## Production deployment
+
+You will want a slightly different `config.json` as the Pheme server might be elsewhere (that said
+if you're doing pure-client changes nothing keeps you from having the client talk to the live 
+production Pheme instance).
+
+
 
 
 ## The CouchDB Design
