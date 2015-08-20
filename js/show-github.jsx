@@ -39,7 +39,7 @@ export default class ShowGitHub extends React.Component {
                     });
                 })
                 .catch(utils.catchHandler);
-            
+
         }
     }
     remoteRenderURL () {
@@ -62,21 +62,21 @@ export default class ShowGitHub extends React.Component {
         ,   intro
         ,   style = {} // padding-left: 20px
         ;
-        
+
         // some things we don't bother rendering
         if (
             (type === "delete" && p.ref_type === "branch") ||
             (type === "create" && p.ref_type === "branch") ||
             (type === "pull_request" && p.action === "synchronize")
         ) return <div></div>;
-        
+
         // pick the link
         if (type === "issues") link = p.issue.html_url;
         else if (type === "issue_comment") link = p.comment.html_url;
-        else if (type === "pull_request") link = p.pull_request.html_url;
+        else if (type === "pull_request" || type === "pull_request_review_comment") link = p.pull_request.html_url;
         else if (type === "push") link = p.compare;
         else if (type === "fork") link = p.forkee.html_url;
-        
+
         // some types have actual content payloads
         if (st.loading) content = <Spinner/>;
         else if (st.html) content = <div dangerouslySetInnerHTML={{__html: st.html}}></div>;
@@ -108,6 +108,22 @@ export default class ShowGitHub extends React.Component {
                       <span className="gh-user">@{p.sender}</span> commented on issue
                       {" "}
                       <a href={p.comment.issue_url} target="_blank">{p.repository}#{p.issue}</a>.
+                    </p>
+            ;
+            style.background = background("comment");
+        }
+        else if (type === "pull_request_review_comment") {
+            intro = <p>
+                      <span className="gh-user">@{p.sender}</span> commented on pull request
+                      {" "}
+                      <a href={p.comment.pull_request.html_url} target="_blank">{p.repository}#{p.comment.pull_request.number}</a>
+                      {" "}
+                      <span className="issue-title">“{p.comment.pull_request.title}”</span>.
+                      {
+                          p.label ?
+                                <span className="label" style={{ background: p.label.color }}>{p.label.name}</span> :
+                                ""
+                      }
                     </p>
             ;
             style.background = background("comment");
@@ -152,7 +168,7 @@ export default class ShowGitHub extends React.Component {
                       <span className="gh-user">@{p.sender}</span> <em>forked</em> repository
                       {" "}
                       <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a> to
-                      {" "} 
+                      {" "}
                       <a href={p.forkee.html_url} target="_blank">{p.forkee.full_name}</a>.
                     </p>
             ;
@@ -162,7 +178,7 @@ export default class ShowGitHub extends React.Component {
             intro = <p>Unknown GH event type</p>;
             content = <div dangerouslySetInnerHTML={{__html: JSON.stringify(props, null, 4)}}></div>;
         }
-        
+
         return <div className="message" key={props.id} style={style}>
                     <div className="meta">
                       <time dateTime={props.time}>{props.time}</time>
@@ -170,7 +186,7 @@ export default class ShowGitHub extends React.Component {
                       {
                           link ? <a href={link} target="_blank">#</a> : "#"
                       }
-                      
+
                     </div>
                     {intro}
                     <div className="content">
