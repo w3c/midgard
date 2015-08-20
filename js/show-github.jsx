@@ -116,9 +116,9 @@ export default class ShowGitHub extends React.Component {
             intro = <p>
                       <span className="gh-user">@{p.sender}</span> commented on pull request
                       {" "}
-                      <a href={p.comment.pull_request.html_url} target="_blank">{p.repository}#{p.comment.pull_request.number}</a>
+                      <a href={p.comment.html_url} target="_blank">{p.repository}#{p.pull_request.number}</a>
                       {" "}
-                      <span className="issue-title">“{p.comment.pull_request.title}”</span>.
+                      <span className="issue-title">“{p.pull_request.title}”</span>.
                       {
                           p.label ?
                                 <span className="label" style={{ background: p.label.color }}>{p.label.name}</span> :
