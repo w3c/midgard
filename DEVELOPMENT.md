@@ -201,103 +201,112 @@ if you're doing pure-client changes nothing keeps you from having the client tal
 production Pheme instance).
 
 
-
-
 ## The CouchDB Design
 
-A small set of design documents are used in CouchDB, and they are all very simple. They are basic
+Just two design documents are used in CouchDB, they're very simple. They are basic
 maps to index the data. You can find them all under `store.js` in `setupDDocs()`. There are:
 
-* users, that can be queried by username or affiliation;
-* groups, queried through their W3C ID or type (WG, etc.);
-* secrets (each repository hook has a separate secret so that a rogue repository can be forgotten
-  about without compromising the others), queried by repository name;
-* tokens (that allow us to impersonate users), queried by username;
-* repos, queried by name; and
-* PRs, queried by any of: repository name and PR number, date, status (open or closed), group that
-  they below to, or affiliation of contributors.
+* users, that can be queried by username;
+* events (with one view per filter), queried by date.
 
-## Server Code Layout
+
+## Pheme Code Layout
 
 The server makes use of several files.
 
-### `server.js`
+### `bin/server.js`
 
-This is the primary entry point, and it does quite a few things. It could be factored out.
+This is the executable. All it does is load up the Pheme library and run it.
 
-It makes use of Passport and its attendant GitHub login strategy in order to support GitHub logins.
-This is basically an OAuth service. When a new user logs in, their user gets created in the DB based
-on the information that GitHub provides through Passport.
+### `lib/pheme.js`
 
-There are also Express endpoints for when OAuth completes and we need to handle the actual login at
-our end (`/auth/github` and `/auth/github/callback`). The code handles redirections so that the user
-should always return to the page that they initially had to log into.
+This is the main library that binds the rest together.
 
-The server uses long-lived sessions, that are stored as files. This could be replaced with a DB, but
-so long as the traffic is reasonable it should not be a problem.
+It sets up the store and server, but the core of its work is to set up the sources correctly based
+on the configuration. This involves:
 
-There is a `logout` endpoint that simply kills the session, and a `logged-in` one that can tell
-whether the current user is logged in (and an admin or not).
+* Loading the source modules that match the configuration.
+* Handling them differently depending on whether they declare being push or poll sources.
+* Configuring each source instance.
+* Exposing the push sources through the web server, and notifying the poll sources that they need to
+  poll at their preferred interval.
 
-Many endpoints simply talk to the store in order to CRUD the data. Nothing fancy.
-
-The complicated parts are those that handle the interaction with GitHub beyond just the login.
-
-`makeCreateOrImportRepo()` will drive the `gh` component in order to (yes) create or import a
-repository. It will create and store a secret unique to the hook attached to that repo, to make sure
-that the secret can leak without enabling people to fake input from any monitored repo. It will also
-store the GitHub token that is allowed to manipulate this repo so that we can interact with it even
-in the user's absence. Once all works out it adds the repository to the DB.
-
-The GitHub hooks handling is nasty, sadly because it has to be (see `prStatus()`). This needs to:
-
-* Find the repository and bail if we're not monitoring it
-* Find a token that allows us to set the status of PRs on that repo
-* Set the status to pending
-* Get existing contributors if the PR is already known about (since it can be updated)
-* Look up all the contributors to see if they're allowed to contribute
-* Set the status of the PR (and store it) based on the contributors' acceptability
-
-The handling of the incoming hook is also amusing. Basically, hooks are signed so that we can be
-sure they are really coming from GitHub. But since we have a different secret per repo we need to
-look inside the payload to figure out which secret to use to validate the signature. Yet we can't
-use the normal Express JSON middleware because that will get rid of the incoming bytes, making
-signature validation impossible.
-
-Once we have the repo, the secret, signature validation, and it's the right kind of event we pass
-the data on.
-
-A few endpoints also talk to the `w3capi` library in order to make it easier to use the W3C API.
-Nothing fancy.
-
-Finally, a number of endpoints just map to `showIndex()`. This is there because we use the History
-API, which means we can get requests with those paths but they should all just serve the index page.
-
-
-### `store.js`
+### `lib/store.js`
 
 This is a very straightforward access point to CouchDB, built atop the cradle library. When ran
 directly it creates the DB and sets up the design documents; otherwise it's a library that can be
 used to access the content of the DB.
 
-Overall it could use some DRY love; a lot of its methods look very much like one another.
+It has simple setup methods that are just used to configure the database. `setupDDocs` can look a
+little confusing because it is generating view filters based on what's specified in 
+`filters/events.js`, but the resulting code is all pretty simple (filtering views on type and 
+source, and indexing them by date).
 
-There is no specific handling of conflicts, they should just fail.
+It has a few simple methods to access the data that should be self-explanatory.
 
-Object types are labelled with a `type` field, and the `id` field is used to know where to store
-each object. The `type` field is what the design documents map on.
+### `lib/server.js`
 
+A basic set of Express endpoints. It manages sessions, CORS, and logging.
 
-### `gh.js`
+You can get the current user (if logged in) and update her preferences for the filters. The login
+endpoint is of some interest: it receives genuine W3C credentials and does a `HEAD` against a
+Member and a Team endpoint to determine if the login works and which ACL level to grant the user
+(note that at this point there is no content in the DB that isn't public, so this isn't all that
+useful). This should probably be replaced by LDAP at some point. You can also logout.
 
-This library handles most of the interactions with GitHub, on top of the octokat library. Most of
-these interactions are simple and linear.
+Other endpoints have to do with the event filters. You can list all those that are available (to
+use in the configuration dialog); you can get a bunch of recent events for a given filter (right now
+there is no paging and it's limited to the more recent 30, but that would be easy to add — there are
+comments to that effect in the store code). Finally you can `POST` a JSON object with filter names
+as its keys and date specifications for values being the date of the most recent event seen for
+that filter. The server will respond with the same keys and for each a number of events more recent
+than the given date. The client uses that by tracking which most recent documents have been seen
+for each filter, and uses the response to mark the event mailboxes as having new content (the client
+polls for that every minute).
 
-
-### `log.js`
+### `lib/log.js`
 
 This is a simple wrapper that exposes an already-built instance of Winston, configured to log to the
 console, file, or both. It's easy to add other logging targets if need be.
+
+### `sources/*`
+
+There are currently two sources, one pull and one push, but it is easy to add more.
+
+All sources must expose a `method` field that is either `push` or `poll` so that Pheme knows how to
+handle them. They also must expose a `createSource(conf, pheme)` method that they use to return an
+object. It gets the instance-specific configuration and an instance of Pheme.
+
+The object returned for poll sources must have a `poll()` method. It can do whatever it wants (see
+the RSS source for an example), and it is expected to use `pheme.store` in order to store the
+events it finds.
+
+The object returned for push sources must have a `handle(req, res, next)` method. This behaves
+basically like an Express middleware. The source can decline to process it by calling `next()`, and
+`req` and `res` are the usual Express request and response objects. The expectation is that the
+source knows how to respond to whatever hook calls it. It also uses `pheme.store` to add new events
+to the database. See the GitHub source for an example.
+
+### `lib/filters/events.js`
+
+The structure hints that there could be multiple filter types, other than events, even though now
+that's all there is. The idea is indeed that at some point there could be other filters on the
+dashboard content, for instance for things that aren't events like currently open WBS polls for a
+given person.
+
+Right now that module just exports a big map of filters on the events. Each has a key name (which
+identifies it across the system), a human `name` and `description`. It must have an `origin` which
+maps to what a given source produces as the origin of its events (RSS uses the RSS feed name given 
+in the configuration so that different RSS feeds have different origins, GitHub uses "github" for
+all its content because it makes sense as a source).
+
+Filters with a `github` origin are expected to have an array of repositories that are sources to be
+included in the filter.
+
+At this point there is no way to union multiple origins (say, those two GitHub repos and that RSS
+feed together) even though it will almost certainly make sense. That's a limitation that relatively
+easy to lift just by making the keys accept arrays of filters, and having the view-generation
+code generator in `setupDDocs()` handle that.
 
 
 ## Client Code Layout
