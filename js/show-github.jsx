@@ -49,6 +49,7 @@ export default class ShowGitHub extends React.Component {
         if (type === "push") return null;
         if (type === "issues") return p.issue.url;
         if (type === "issue_comment") return p.comment.url; // this includes pull request comments
+        if (type === "pull_request_review_comment") return p.comment.url;
         else return null;
     }
 
