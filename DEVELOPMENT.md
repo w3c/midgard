@@ -8,7 +8,8 @@ put docs in pheme saying to point here
 rebuild on deploy
 explain filters and config
 explain how to write sources (and how one could start with minutes)
-how to deploy DB
+how to deploy DB, notably when changing filters
+rebuild on deploy
 
 
 
