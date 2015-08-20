@@ -72,8 +72,8 @@ export default class ShowGitHub extends React.Component {
 
         // pick the link
         if (type === "issues") link = p.issue.html_url;
-        else if (type === "issue_comment") link = p.comment.html_url;
-        else if (type === "pull_request" || type === "pull_request_review_comment") link = p.pull_request.html_url;
+        else if (type === "issue_comment" || type === "pull_request_review_comment") link = p.comment.html_url;
+        else if (type === "pull_request") link = p.pull_request.html_url;
         else if (type === "push") link = p.compare;
         else if (type === "fork") link = p.forkee.html_url;
 
