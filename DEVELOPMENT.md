@@ -1,28 +1,16 @@
 
+# How to develop and deploy Pheme and Midgard
 
-# THIS IS NOT THE RIGHT DOCS, JUST KEEPING IT TO HELP ME
+Pheme can be deployed on its own, it can be used for things other than Midgard. Midgard, however,
+requires Pheme.
 
-grab some stuff from Ash-Nazg
-also update README
-put docs in pheme saying to point here
-rebuild on deploy
-explain filters and config
-explain how to write sources (and how one could start with minutes)
-how to deploy DB, notably when changing filters
-rebuild on deploy
-
-
-
-
-# How to develop Ash-Nazg
-
-This document describes what one needs to know in order to hack on Ash-Nazg. If you are familiar
-with Node, CouchDB, and React you are already on sane territory but I recommend you at least skim
-this document as the local specificities are laid out as well.
+This document describes what one needs to know in order to hack on Pheme and Midgard. If you are
+familiar with Node, CouchDB, and React you are already on sane territory but I recommend you at
+least skim this document as the local specificities are laid out as well.
 
 ## IMPORTANT WARNING
 
-If you are rebuilding the client-side code on a Mac, you are likely to get an incomprehensible
+If you are rebuilding the Midgard code on a Mac, you are likely to get an incomprehensible
 error from Browserify of the type `Error: EMFILE, open '/some/path'`. That is because the number of
 simultaneously open files is bizarrely low on OSX, and Browserify opens a bizarrely high number
 of resources concurrently.
@@ -35,33 +23,35 @@ If you don't know that, you can waste quite some time.
 
 ## Overall Architecture
 
-The repository actually contains two related but generally separate aspects: the server side and the
-client side. They do not share code, but communicate over HTTP. This may seem like an off choice,
-but it can prove useful if at some point it becomes required to use an
-[isomorphic approach](http://nerds.airbnb.com/isomorphic-javascript-future-web-apps/) (which can
-rather readily be supported).
-
-The server side is written in Node, and uses Express. It is a pretty typical stack, serving static
-content out of `public`, using the Express middleware for sessions, Winston for logging, etc.
+The Pheme repository is a purely server-side application. It exposes a JSON API over the Web but
+nothing user-consumable. It is written in Node and uses Express as well as the typical Express
+middleware for sessions, logging, etc.
 
 The database system is CouchDB. It is also used in a straightforward manner, with no reliance on
-CouchDB specificities. If needed, it could be ported to another system.
+CouchDB specificities. If needed, it could be ported to another system. The only thing that is worth
+knowing is that the filters that provide views on the data are used to generate actual CouchDB 
+views. This gives them huge performance (since they're basically pre-indexed), but it means you have
+to remember to run the DB updater when you change the filters. If a UI were made to create filters
+(which might be a good idea at some point) this could be done live.
 
-The client side is written using React, making lightweight use of the Flux architecture, and is
-built using Browserify. React is its own way of thinking about Web applications that has its own
-learning curve (and can require a little bit of retooling of one's editor for the JSX part) but once
-you start using it it is hard to go back. It's the first framework I find to be worth the hype since
-jQuery (and for completely different reasons).
+Migard is, on its side, a purely client-side application. It consumes the JSON API that Pheme 
+exposes and simply renders it. It can be served by pretty much any Web server.
+
+It is written using React, making lightweight use of the Flux architecture, and is built using
+Browserify. React is its own way of thinking about Web applications that has its own learning curve
+(and can require a little bit of retooling of one's editor for the JSX part) but once you start
+using it it is hard to go back. It's the first framework I find to be worth the hype since jQuery
+(and for completely different reasons).
 
 No CSS framework is used; but the CSS does get built too using cleancss (for modularity and
 minification).
 
-## Setting Up
+## Installing Pheme
 
-Installation is straightforward:
+It's pretty straightforward:
 
-    git clone https://github.com/w3c/ash-nazg
-    cd ash-nazg
+    git clone https://github.com/w3c/pheme
+    cd pheme
     npm install -d
 
 You now need to configure the system so that it can find various bits and pieces. For this create a
@@ -69,57 +59,90 @@ You now need to configure the system so that it can find various bits and pieces
 
 ```
 {
-    // the root URL, this is what I use on my development machine
-    "url":              "http://ash.bast/"
-    // the full URL to the GitHub hook; locally I use ngrok to expose that to the world
-    // (see below for details about ngrok). In production this can be inferred from url+hookPath
-,   "hookURL":          "http://ashnazg.ngrok.io/api/hook"
-    // the local path for the GitHub hook
-,   "hookPath":         "api/hook"
-    // if you aren't running ash-nazg at the root of a site, you can define a prefix so that it
-    // knows where its actual root is. Otherwise /.
-,   "urlPathPrefix":    "/"
-    // pick a port to use
-,   "serverPort":       3043
-    // you need a secret to seed the sessions
-,   "sessionSecret":    "Some secret phrase"
-    // the client ID and secret you get from GitHub
-,   "ghClientID":       "deadbeef"
-,   "ghClientSecret":   "d3adb33f"
-    // set to true if you want logging to the console (false in production)
-,   "logToConsole":     true
-    // username and password for Couch
-,   "couchAuth": {
-        "username": "robin"
-    ,   "password": "some!cool@password"
+    // This is the port you want to run on; it can be 80 but I run it behind an nginx proxy.
+    "port": 3042
+    // This is the list of data sources. The keys correspond to source modules (under `sources/`).
+    // Each source module accepts an array of instances each of which can get its own configuration.
+,   "sources": {
+        // The "rss" source can take an arbitrary number of RSS/Atom sources. Each of those needs to
+        // have a `name` (which is has to be unique in the list and ismapped in the event filters),
+        // a `url` to the RSS/Atom to poll, and an `acl` which can be `public` or `team` (and 
+        // should eventually include `member` too; unless we decide that all that's in the 
+        // dashboard is public).
+        // Here there are two RSS sources, the official W3C news from W3C Memes, and the party line
+        // from the W3C itself.
+        "rss": [
+            {
+                "name": "W3CMemes"
+            ,   "url":  "http://w3cmemes.tumblr.com/rss"
+            ,   "acl":  "public"
+            }
+        ,   {
+                "name": "W3C News"
+            ,   "url":  "http://www.w3.org/blog/news/feed/atom"
+            ,   "acl":  "public"
+            }
+        ]
+        // The "github" source can take an arbitrary number of hook locations. The value in having
+        // more than one is because Web hooks need to have a secret (so that people can't send you
+        // spurious content), and it's good practice to have different secrets for different places.
+        // Note that you can set up an organisation-wide hook (there's one for W3C).
+        // The secret below isn't the real one for W3C. It's probably a good idea to get the real 
+        // one from @darobin if you need it.
+        // If you have several hooks, they need to have unique names and unique paths.
+    ,   "github": [
+            {
+                "name":     "GitHub W3C Repositories"
+            ,   "secret":   "Some magical phrase"
+            ,   "path":     "/hook"
+            }
+        ]
     }
-    // the database name in Couch
-,   "couchDB":  "ashnazg"
+    // Configuration for the store, probably self-explanatory
+,   "store": {
+        "auth": {
+            "username": "robin"
+        ,   "password": "wickEdCo0lPasswr.D"
+        }
+    }
+    // The logging. `console` turns logging to the console on or off (likely off in production); and
+    // `file` (if present) is the absolute path to, yes, a log file to log logs into.
+,   "logs": {
+        "console":  true
+    ,   "file":     "/some/absolute/path/all.log"
+    }
 }
 ```
-
 Now, with CouchDB is already up and running, you want to run:
 
-    node store.js
-    node tools/add-admin.js yourGitHubUsername
+    node lib/store.js
 
 This installs all the design documents that Couch needs. Whenever you change the design documents,
-just run `store.js` again. You only need to create an admin user on a fresh database; after that
-other admins can be minted through the UI.
+or **whenever you update `lib/filters/events.js`** just run `lib/store.js` again.
 
 Running the server is as simple as:
 
-    npm run start
+    node bin/server.js
 
-If you are going to develop however, that isn't the best way of running the server. If you are 
-touching several aspects (CSS, client, server) you will want to have several terminals open.
+If you are going to develop however, that isn't the best way of running the server. When developing
+the server code, you want to run:
 
-When developing the server code, you want to run:
+    npm run watch
 
-    npm run watch-server
-
-This will start a nodemon instance that will monitor the changes you make to the *server* code, and
+This will start a nodemon instance that will monitor the changes you make to the Pheme code, and
 restart it for you.
+
+## Deploying Pheme in Production
+
+You will want a slightly different `config.json`; the one in hatchery is serviceable (it notably has
+the right secret for the W3C hook).
+
+You don't want to use `npm run` in production; instead use pm2. A configuration is provided for it
+in `pm2-production.json` (it's what's used on hatchery).
+
+## Installing Midgard
+
+
 
 When developing client code, you want to run:
 
@@ -435,3 +458,17 @@ W3C applications, notably in Midgard (and possibly the GitHub guide).
 
 The backend store could use a bit of abstraction to dull the repetition; this is a simple 
 refactoring that is probably a good way to get into the codebase.
+
+
+# TODO
+
+grab some stuff from Ash-Nazg
+also update README
+put docs in pheme saying to point here
+rebuild on deploy
+explain filters and config
+explain how to write sources (and how one could start with minutes)
+how to deploy DB, notably when changing filters
+rebuild on deploy
+
+

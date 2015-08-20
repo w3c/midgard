@@ -1,8 +1,0 @@
-<p>
-  <span class='gh-user'>@{{sender}}</span> <em>{{action}}</em> pull request
-  <a href="{{pull_request.html_url}}" target="_blank">{{repository}}#{{pull_request.number}}</a>
-  <span class="issue-title">“{{pull_request.title}}”</span>.
-  {{#if label}}<span class="label" style="background: #{{label.color}}">{{label.name}}</span>{{/if}}
-</p>
-<!-- XXX this is MD, we need to render it, and safely -->
-<pre class="more">{{pull_request.body}}</pre>
