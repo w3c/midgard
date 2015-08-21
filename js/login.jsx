@@ -44,7 +44,7 @@ export default class Login extends React.Component {
                 <form onSubmit={this._onLogin.bind(this)} ref="login" disabled={st.loading}>
                     <div className="formline">
                         <label htmlFor="login-sername">Username:</label>
-                        <input type="text" id="login-username" ref="username"/>
+                        <input type="text" id="login-username" autocapitalize="none" autocorrect="off" ref="username"/>
                     </div>
                     <div className="formline">
                         <label htmlFor="login-password">Password:</label>
