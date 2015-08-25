@@ -164,6 +164,15 @@ export default class ShowGitHub extends React.Component {
             ;
             style.background = background("repo-push");
         }
+        else if (type === "create") {
+            intro = <p>
+                      <span className="gh-user">@{p.sender}</span> <em>created</em> a {p.ref_type} named <a href={"https://github.com/" + p.repository + "/tree/" + p.ref} target="_blank">{p.ref}</a> on repository
+                      {" "}
+                      <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a>.
+                    </p>
+            ;
+            style.background = background("repo-created");
+        }
         else if (type === "fork") {
             intro = <p>
                       <span className="gh-user">@{p.sender}</span> <em>forked</em> repository
