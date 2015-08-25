@@ -27,7 +27,7 @@ The Pheme repository is a purely server-side application. It exposes a JSON API 
 nothing user-consumable. It is written in Node and uses Express as well as the typical Express
 middleware for sessions, logging, etc.
 
-The database system is CouchDB. It is also used in a straightforward manner, with no reliance on
+The database system is [CouchDB][CouchDB]. It is also used in a straightforward manner, with no reliance on
 CouchDB specificities. If needed, it could be ported to another system. The only thing that is worth
 knowing is that the filters that provide views on the data are used to generate actual CouchDB
 views. This gives them huge performance (since they're basically pre-indexed), but it means you have
@@ -512,3 +512,5 @@ application has taken shape. Also, it's worth looking at Redux.
 The components and much of the style can probably be extracted so that that can be reused in other
 W3C applications (see what's similar with Ash-Nazg, noting that the component may have been 
 tweaked between the two).
+
+[CouchDB]: http://couchdb.apache.org/
