@@ -29,12 +29,12 @@ middleware for sessions, logging, etc.
 
 The database system is CouchDB. It is also used in a straightforward manner, with no reliance on
 CouchDB specificities. If needed, it could be ported to another system. The only thing that is worth
-knowing is that the filters that provide views on the data are used to generate actual CouchDB 
+knowing is that the filters that provide views on the data are used to generate actual CouchDB
 views. This gives them huge performance (since they're basically pre-indexed), but it means you have
 to remember to run the DB updater when you change the filters. If a UI were made to create filters
 (which might be a good idea at some point) this could be done live.
 
-Migard is, on its side, a purely client-side application. It consumes the JSON API that Pheme 
+Migard is, on its side, a purely client-side application. It consumes the JSON API that Pheme
 exposes and simply renders it. It can be served by pretty much any Web server.
 
 It is written using React, making lightweight use of the Flux architecture, and is built using
@@ -66,8 +66,8 @@ You now need to configure the system so that it can find various bits and pieces
 ,   "sources": {
         // The "rss" source can take an arbitrary number of RSS/Atom sources. Each of those needs to
         // have a `name` (which is has to be unique in the list and ismapped in the event filters),
-        // a `url` to the RSS/Atom to poll, and an `acl` which can be `public` or `team` (and 
-        // should eventually include `member` too; unless we decide that all that's in the 
+        // a `url` to the RSS/Atom to poll, and an `acl` which can be `public` or `team` (and
+        // should eventually include `member` too; unless we decide that all that's in the
         // dashboard is public).
         // Here there are two RSS sources, the official W3C news from W3C Memes, and the party line
         // from the W3C itself.
@@ -87,7 +87,7 @@ You now need to configure the system so that it can find various bits and pieces
         // more than one is because Web hooks need to have a secret (so that people can't send you
         // spurious content), and it's good practice to have different secrets for different places.
         // Note that you can set up an organisation-wide hook (there's one for W3C).
-        // The secret below isn't the real one for W3C. It's probably a good idea to get the real 
+        // The secret below isn't the real one for W3C. It's probably a good idea to get the real
         // one from @darobin if you need it.
         // If you have several hooks, they need to have unique names and unique paths.
     ,   "github": [
@@ -135,7 +135,7 @@ restart it for you.
 One of the issues with developing on one's box is that it is not typically accessible over the Web
 for outside services to interact with. If you are trying to get events from repositories on GitHub,
 you will need to expose yourself to the Web. You may already have your preferred way of doing that,
-but in case you don't you can use ngrok (which is what I do). In order to expose your service 
+but in case you don't you can use ngrok (which is what I do). In order to expose your service
 through ngrok, just run
 
     npm run expose
@@ -182,10 +182,10 @@ You then need to run:
 given how the JS build dominates the build time it makes no difference.)
 
 That's it, you have a working Midgard, ready to be served. ***IMPORTANT NOTE***: whenever you udpate
-the code, you need to run the build again. That's because the built version is not under version 
+the code, you need to run the build again. That's because the built version is not under version
 control, because it depends on the small configuration.
 
-When developing the code, you absolutely *do not want to run `npm run build` yourself for every 
+When developing the code, you absolutely *do not want to run `npm run build` yourself for every
 change*. The reason for that is that a full Browserify build can be quite slow. Instead we have a
 Watchify-based command that does incremental building whenever it detects a change. On my laptop
 that's the different between insufferable 5 seconds build time and tolerable 0.2s build time. Just:
@@ -197,7 +197,7 @@ This will build both the CSS and JS/JSX whenever needed.
 ## Production deployment
 
 You will want a slightly different `config.json` as the Pheme server might be elsewhere (that said
-if you're doing pure-client changes nothing keeps you from having the client talk to the live 
+if you're doing pure-client changes nothing keeps you from having the client talk to the live
 production Pheme instance).
 
 
@@ -238,8 +238,8 @@ directly it creates the DB and sets up the design documents; otherwise it's a li
 used to access the content of the DB.
 
 It has simple setup methods that are just used to configure the database. `setupDDocs` can look a
-little confusing because it is generating view filters based on what's specified in 
-`filters/events.js`, but the resulting code is all pretty simple (filtering views on type and 
+little confusing because it is generating view filters based on what's specified in
+`filters/events.js`, but the resulting code is all pretty simple (filtering views on type and
 source, and indexing them by date).
 
 It has a few simple methods to access the data that should be self-explanatory.
@@ -296,7 +296,7 @@ given person.
 
 Right now that module just exports a big map of filters on the events. Each has a key name (which
 identifies it across the system), a human `name` and `description`. It must have an `origin` which
-maps to what a given source produces as the origin of its events (RSS uses the RSS feed name given 
+maps to what a given source produces as the origin of its events (RSS uses the RSS feed name given
 in the configuration so that different RSS feeds have different origins, GitHub uses "github" for
 all its content because it makes sense as a source).
 
@@ -309,30 +309,18 @@ easy to lift just by making the keys accept arrays of filters, and having the vi
 code generator in `setupDDocs()` handle that.
 
 
-## Client Code Layout
+## Midgard Code Layout
 
-### `app.css` and `css/fonts.css`
+### `index.html`
 
-These are very simple CSS files. They are merged together (along with imported dependencies) and
-stored under `public/css`. Therefore that's what their paths are relative to.
+A very basic bare bones HTML page that loads the style and script.
 
-There is no magic and no framework. The complete built CSS is ~5K.
+### `css/midgard.css`
 
-### `app.jsx`
+A pretty basic CSS file. It just loads up normalize and ungrid, and then styles the various controls
+in a pretty general manner.
 
-This is the entry point for the JS application. Most of what it does is to import things and get
-them set up.
-
-The whole client JS is written in ES6, JSX, React. This can be surprising at first, but it is a
-powerful combo.
-
-The root `AshNazg` component listens for changes to the login state of the user (through the Login
-store) in order to change the navigation bar that it controls. All it renders is basically: the
-application title, a simple layout grid (that uses the ungrid CSS approach), the navigation bar, and
-an empty space for the routed component. It also renders the "flash" area that shows messages for
-successful operations or errors.
-
-Finally, the router is set up with a number of paths mapping to imported components.
+There is no magic and no framework. The complete built CSS is ~7K.
 
 ### `components/*.jsx`
 
@@ -343,37 +331,39 @@ excessively on `div`s and classes.
 
 #### `application.jsx`
 
-A simple layout wrapper, with a title, that just renders its children. Used to render routed 
+A simple layout wrapper, with a title, that just renders its children. Used to render routed
 components into.
 
 #### `col.jsx` and `row.jsx`
 
 Very simple row and column items that use ungrid. Nothing fancy.
 
-#### `nav-box.jsx` and `nav-item.jsx`
-
-Made to be used as a navigation column or as drop down menus, the boxes have titles that label a
-navigation section, the items are basically just navigation entries.
-
 #### `spinner.jsx`
 
-This is a simple loading/progress spinner (that uses `img/spinner.svg`). If Chrome drops SMIL 
-support this will need to be replaced by something else. It understands the `prefix` option in order
-to still work when the application is not running at the site's root (an improvement would be to
-just inline the SVG).
-
-It also accepts a `size="small"` property which renders it at half size.
+This is a simple loading/progress spinner with built-in SVG, no dependencies, and CSS animation so
+that when Chrome drops SMIL support this will work. It takes a few options.
 
 #### `flash-list.jsx`
 
 This just renders the list of success/error messages that are stored in the message store.
+
+It has a magical mode, but only the initiated can turn it on.
+
+### `js/midgard.jsx`
+
+This is the entry point for the JS application. Most of what it does is to import things and get
+them set up.
+
+It does not do much apart from rendering either a spinner (while loading), a login form (if not
+logged in), or the application itself. There is routing support in place, but it is not currently
+wired in. Doing so would be relatively easy.
 
 ### `stores/*.js` and `actions/*.js`
 
 One architectural approach that works well with React is known as Flux. At its heart it is a simple
 idea to handle events and data in an application, in such a manner that avoids tangled-up messes.
 
-The application (typically driven by the user) can trigger an **action**, usually with attached 
+The application (typically driven by the user) can trigger an **action**, usually with attached
 data. An example from the code are error messages that can be emitted pretty much anywhere in the
 application (ditto success messages).
 
@@ -385,129 +375,140 @@ by accessing it when needed). For the error/success messages, the store just kee
 they are dismissed, which means that navigation across components will still render the messages in
 the store.
 
-Finally, components can listen to changes in stores, and react to them so as to update thei
+Finally, components can listen to changes in stores, and react to them so as to update their
 rendering.
 
-Overall, this application should make use of actions and stores a lot more. Developing it further
-will likely require refactoring along those lines. One of the great things with React is that the
-components are isolated in such a manner that you can follow bad practices inside of a given 
-component without damaging the rest of the application. Not that this is recommended, but it does
-allow one to experiment with what a given component should do before refactoring it. I would not say
-that the components in this application follow bad practices, but they could be refactored to use
-stores and actions in order to be cleaner and more testable.
+This application uses actions and stores relatively extensively but data management could probably
+be refactored some to make it a little bit clearer. One promising approach being developed is
+Redux; its ideas would seem to match this type of application really well, but I estimated that it
+was still too early days to apply that.
 
 #### `actions/messages.js` and `actions/user.js`
 
 These are actions. These modules can just be imported by any component that wishes to carry out such
-actions, without having to know anything about whether or how the result gets stored, or how it 
+actions, without having to know anything about whether or how the result gets stored, or how it
 might influence the rest of the application (it's completely fire-and-forget).
 
 The `messages.js` action module supports `error()` and `success()` messages, and can `dismiss()` a
-given message. The `user.js` action module supports `login()` and `logout()` actions corresponding 
-to what the user does.
+given message.
+
+The `user.js` action module supports `login()` and `logout()` actions corresponding to what the user
+does, it can `loadUser()` to get the user's information (after login has completed), and can 
+manipulate the filters that the user has configured using `addFilter()` and `removeFilter()`.
 
 #### `stores/login.js` and `stores/message.js`
 
-The `login` store keeps information about whether the user is logged in (and an administrator), and
-handles the logging out when requested. The `message` store keeps a list of error and success
+The `login` store keeps information about whether the user is logged in, what their information is, 
+and handles the logging out when requested. The `message` store keeps a list of error and success
 messages that haven't been dismissed.
 
-### The `application/*.jsx` components
+#### `actions/mailbox.js`, `actions/last-seen.js` and `actions/configuration.js`
+
+These actions will select a filter mailbox (which enables various parts of the app to stay in sync
+with that), trigger the loading of the configuration (currently just the list of filters the server
+has available), and `last-seen.js` can both indicate the date of the last message seen in a box and
+initiate polling for updates to mailbox filters.
+
+#### `store/mailbox.js`, `store/last-seen.js`, `store/configuration.js`, and `store/filter.js`
+
+The configuration store just lists the filters available on the server. If the server's list 
+changes, the application currently needs to be reloaded. This could be changed (but it's not a very
+frequent situation).
+
+The last-seen store handles polling the server regularly by sending it a map of the most recently
+seen message in a filter mailbox (which it tracks) and receiving a count of new events since each
+of those dates. The date structure is an array that is basically (where `d` is a date):
+
+```js
+[
+  d.getUTCFullYear()
+, d.getUTCMonth() + 1
+, d.getUTCDate()
+, d.getUTCHours()
+, d.getUTCMinutes()
+, d.getUTCSeconds()
+, d.getUTCMilliseconds()
+]
+```
+
+The reason for this unusual structure (apart from the fact that JSON doesn't do dates) is that it is
+the same structure used as key for the event views in CouchDB. The advantage is that it allows for
+other queries, for instance `[2015, 3, 15]` will match everything on March 15, 2015 irrespective of 
+the rest.
+
+By default last-seen polls every minute. This could be made configurable.
+
+The mailbox store just stores the current mailbox. It is a very good example of why there is
+currently too much boilerplate in stores that could be extracted relatively easily.
+
+The filter store keeps track of the user's preference in terms of which filters she wants to have
+active as mailboxes. The data is stored on the server so as to persist across devices, but it's
+handled not through saving the user object directly (which could be problematic given that such
+objects tend to have ACL information and the such) but by talking to a special endpoint that just
+enables saving the filters. They are saved immediately with every edit, it's fast enough for that.
+
+### The `js/*.jsx` components
 
 These are non-reusable components that are specific to this applications.
 
-#### `welcome.jsx`
-
-Just a static component with the welcome text; this is only a component because it's the simplest
-way of encapsulating anything that may be rendered in the application area.
-
 #### `login.jsx`
 
-A very simple component that explains the login process and links to the OAuth processor.
+A simple component that displays a login form and triggers an action to log in.
 
 #### `logout-button.jsx`
 
 A button that can be used (and reused) anywhere (in our case, it's part of the navigation). When
 clicked it dispatches a `logout` action.
 
-#### `repo-list.jsx`
+#### `toolbar.jsx`
 
-A simple component that fetches the list of repositories that are managed and lists them.
+A simple component that lists the actions available from the toolbar, and handles toggling the 
+visibility of the setting.
 
-#### `repo-manager.jsx`
+#### `filter-toggle.jsx`
 
-A more elaborate component that handles both creation and importing of repositories into the system.
-It handles the dialog for create/import, including listing the organisations that the user has
-access to and which groups a repository can be managed by.
+A small component that is instantiated with an available filter description and knows how to toggle
+it by dispatching add/remove actions.
 
-All of the useful repository-management logic is on the server side, but this reacts to the results.
+#### `filter-list.jsx`
 
-#### `pr/last-week.jsx`
+Shows the list of filter mailboxes that the user has configured, reacting to changes in that
+configuration. It also manages picking which one is actually selected, and stores that information
+locally so that reloading returns to the same place.
 
-The list of pull requests that were processed one way or another during the last week. This
-component can also filter them dynamically by affiliation.
+#### `filter-selector.jsx`
 
-#### `pr/open.jsx`
+Essentially a button and/or tab that can be clicked to select a filter mailbox, sitting in the list
+of filters. It also knows how to render the unread count.
 
-The list of currently open PRs.
+#### `event-list.jsx`
 
-#### `pr/view.jsx`
+The list of events for the selected mailbox. It simply tracks changes to the currently selected
+mailbox and fetches the events that match it. It will use different rendering for different types of
+events. RSS rendering is built-in (though it could be farmed out); GitHub rendering is complex 
+enough to justify its own component.
 
-The detailed view of a single PR, with various affordances to manage it.
+#### `show-github.jsx`
 
-#### `admin/users.jsx` and `admin/user-line.jsx`
+A component that knows how to render a GitHub-related event. This gets relatively convoluted because
+there are many different types of those.
 
-The list of users known to the system, with some details and links to edit them. The `user-line`
-component just renders one line in the list of users.
+One important aspect of this component is `remoteRenderURL()`. Upon instantiation, for certain types
+of events, it will actually contact GitHub's API in order to obtain an HTML rendering of the content
+of the event. This is typically true of any event that can include Markdown — we don't want to
+render that ourselves.
 
-#### `admin/add-user.jsx`
+The actual rendering is basically a big bunch of if branches that depend on event type and possibly
+other information bits to pick the right rendering for a given event.
 
-A very simple dialog that can be used to add users with.
-
-#### `admin/edit-user.jsx`
-
-One of the more intricate parts of the system. Brings in data from GitHub, the W3C API, and the 
-system in order to bridge together various bits of information about the user, such as the groups
-they belong to, their real name, their affiliation, their W3C and GitHub IDs, etc.
-
-#### `admin/groups.jsx` and `admin/group-line.jsx`
-
-Lists all the groups known to the W3C API, and makes it possible to add those that are not already
-in the system. Each line in the table is rendered by `group-line.jsx`.
-
-#### `admin/pick-user.jsx`
-
-A very simple interface that links to `add-user` in order to add a user.
+It is known at this time that not all events have rendering. If you see a JSON dump, that's where
+it's coming from. Adding the rendering for a new event type is easy.
 
 ## Suggested Improvements
 
-As indicated above, the natural next step would be to start using Flux more. Right now, most 
-components access data from the backend directly. This is okay because the data is not shared
-across components, and because each backend endpoint is only access by one component (such that if
-the backend is changed, only one component needs an update). But it would be better for the 
-long-term development and testability of the application if endpoints were logically encapsulated in
-stores that components listened to. It would de-duplicate some of the fetch code, too.
-
-Much of the client side is protected behind a login (that requires strong commitments); some of it
-probably does not need to be. What's needed there is to stop hiding those parts and to make sure
-that they don't display affordances that aren't available to unlogged users.
+The Flux usage was grown rather than architected. It could use a bit of fine-tuning now that the
+application has taken shape. Also, it's worth looking at Redux.
 
 The components and much of the style can probably be extracted so that that can be reused in other
-W3C applications, notably in Midgard (and possibly the GitHub guide).
-
-The backend store could use a bit of abstraction to dull the repetition; this is a simple 
-refactoring that is probably a good way to get into the codebase.
-
-
-# TODO
-
-grab some stuff from Ash-Nazg
-also update README
-put docs in pheme saying to point here
-rebuild on deploy
-explain filters and config
-explain how to write sources (and how one could start with minutes)
-how to deploy DB, notably when changing filters
-rebuild on deploy
-
-
+W3C applications (see what's similar with Ash-Nazg, noting that the component may have been 
+tweaked between the two).

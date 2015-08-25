@@ -74,8 +74,6 @@ class W3CDashboard extends React.Component {
             body = <Login/>;
         }
         else {
-            // XXX
-            //  body has a row, with a col for MailboxList and a col for ShowMailbox
             toolbar = <Toolbar/>;
             body = <Row>
                     <Col className="mbx-list"><FilterList/></Col>
