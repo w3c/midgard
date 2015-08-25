@@ -1,8 +1,8 @@
 
 # How to develop and deploy Pheme and Midgard
 
-Pheme can be deployed on its own, it can be used for things other than Midgard. Midgard, however,
-requires Pheme.
+[Pheme][Pheme] can be deployed on its own, it can be used for things other than [Midgard][Midgard].
+Midgard, however, requires Pheme.
 
 This document describes what one needs to know in order to hack on Pheme and Midgard. If you are
 familiar with Node, CouchDB, and React you are already on sane territory but I recommend you at
@@ -24,27 +24,27 @@ If you don't know that, you can waste quite some time.
 ## Overall Architecture
 
 The Pheme repository is a purely server-side application. It exposes a JSON API over the Web but
-nothing user-consumable. It is written in Node and uses Express as well as the typical Express
-middleware for sessions, logging, etc.
+nothing user-consumable. It is written in Node and uses [Express][Express] as well as the typical
+Express middleware for sessions, logging, etc.
 
-The database system is [CouchDB][CouchDB]. It is also used in a straightforward manner, with no reliance on
-CouchDB specificities. If needed, it could be ported to another system. The only thing that is worth
-knowing is that the filters that provide views on the data are used to generate actual CouchDB
-views. This gives them huge performance (since they're basically pre-indexed), but it means you have
-to remember to run the DB updater when you change the filters. If a UI were made to create filters
-(which might be a good idea at some point) this could be done live.
+The database system is [CouchDB][CouchDB]. It is also used in a straightforward manner, with no
+reliance on CouchDB specificities. If needed, it could be ported to another system. The only thing
+that is worth knowing is that the filters that provide views on the data are used to generate actual
+CouchDB views. This gives them huge performance (since they're basically pre-indexed), but it means
+you have to remember to run the DB updater when you change the filters. If a UI were made to create
+filters (which might be a good idea at some point) this could be done live.
 
-Migard is, on its side, a purely client-side application. It consumes the JSON API that Pheme
+Midgard is, on its side, a purely client-side application. It consumes the JSON API that Pheme
 exposes and simply renders it. It can be served by pretty much any Web server.
 
-It is written using React, making lightweight use of the Flux architecture, and is built using
-Browserify. React is its own way of thinking about Web applications that has its own learning curve
-(and can require a little bit of retooling of one's editor for the JSX part) but once you start
-using it it is hard to go back. It's the first framework I find to be worth the hype since jQuery
-(and for completely different reasons).
+It is written using [React][React], making lightweight use of the [Flux][Flux] architecture, and is
+built using [Browserify][Browserify]. React is its own way of thinking about Web applications that
+has its own learning curve (and can require a little bit of retooling of one's editor for the
+[JSX][JSX] part) but once you start using it it is hard to go back. It's the first framework I find
+to be worth the hype since jQuery (and for completely different reasons).
 
-No CSS framework is used; but the CSS does get built too using cleancss (for modularity and
-minification).
+No CSS framework is used; but the CSS does get built too using [cleancss][cleancss] (for modularity
+and minification).
 
 ## Installing Pheme
 
@@ -129,14 +129,14 @@ the server code, you want to run:
 
     npm run watch
 
-This will start a nodemon instance that will monitor the changes you make to the Pheme code, and
-restart it for you.
+This will start a [nodemon][nodemon] instance that will monitor the changes you make to the Pheme
+code, and restart it for you.
 
 One of the issues with developing on one's box is that it is not typically accessible over the Web
 for outside services to interact with. If you are trying to get events from repositories on GitHub,
 you will need to expose yourself to the Web. You may already have your preferred way of doing that,
-but in case you don't you can use ngrok (which is what I do). In order to expose your service
-through ngrok, just run
+but in case you don't you can use [ngrok][ngrok] (which is what I do). In order to expose your
+service through ngrok, just run
 
     npm run expose
 
@@ -148,8 +148,8 @@ receive GitHub events.
 You will want a slightly different `config.json`; the one in hatchery is serviceable (it notably has
 the right secret for the W3C hook).
 
-You don't want to use `npm run` in production; instead use pm2. A configuration is provided for it
-in `pm2-production.json` (it's what's used on hatchery).
+You don't want to use `npm run` in production; instead use [pm2][pm2]. A configuration is provided
+for it in `pm2-production.json` (it's what's used on hatchery).
 
 ## Installing Midgard
 
@@ -187,8 +187,9 @@ control, because it depends on the small configuration.
 
 When developing the code, you absolutely *do not want to run `npm run build` yourself for every
 change*. The reason for that is that a full Browserify build can be quite slow. Instead we have a
-Watchify-based command that does incremental building whenever it detects a change. On my laptop
-that's the different between insufferable 5 seconds build time and tolerable 0.2s build time. Just:
+[Watchify][Watchify]-based command that does incremental building whenever it detects a change. On
+my laptop that's the different between insufferable 5 seconds build time and tolerable 0.2s build
+time. Just:
 
     npm run watch
 
@@ -233,9 +234,9 @@ on the configuration. This involves:
 
 ### `lib/store.js`
 
-This is a very straightforward access point to CouchDB, built atop the cradle library. When ran
-directly it creates the DB and sets up the design documents; otherwise it's a library that can be
-used to access the content of the DB.
+This is a very straightforward access point to CouchDB, built atop the [cradle][cradle] library.
+When ran directly it creates the DB and sets up the design documents; otherwise it's a library that
+can be used to access the content of the DB.
 
 It has simple setup methods that are just used to configure the database. `setupDDocs` can look a
 little confusing because it is generating view filters based on what's specified in
@@ -266,8 +267,8 @@ polls for that every minute).
 
 ### `lib/log.js`
 
-This is a simple wrapper that exposes an already-built instance of Winston, configured to log to the
-console, file, or both. It's easy to add other logging targets if need be.
+This is a simple wrapper that exposes an already-built instance of [Winston][Winston], configured to
+log to the console, file, or both. It's easy to add other logging targets if need be.
 
 ### `sources/*`
 
@@ -317,8 +318,8 @@ A very basic bare bones HTML page that loads the style and script.
 
 ### `css/midgard.css`
 
-A pretty basic CSS file. It just loads up normalize and ungrid, and then styles the various controls
-in a pretty general manner.
+A pretty basic CSS file. It just loads up [normalize][normalize] and [ungrid][ungrid], and then
+styles the various controls in a pretty general manner.
 
 There is no magic and no framework. The complete built CSS is ~7K.
 
@@ -380,8 +381,8 @@ rendering.
 
 This application uses actions and stores relatively extensively but data management could probably
 be refactored some to make it a little bit clearer. One promising approach being developed is
-Redux; its ideas would seem to match this type of application really well, but I estimated that it
-was still too early days to apply that.
+[Redux][Redux]; its ideas would seem to match this type of application really well, but I estimated
+that it was still too early days to apply that.
 
 #### `actions/messages.js` and `actions/user.js`
 
@@ -514,3 +515,20 @@ W3C applications (see what's similar with Ash-Nazg, noting that the component ma
 tweaked between the two).
 
 [CouchDB]: http://couchdb.apache.org/
+[Express]: http://expressjs.com/
+[Pheme]: https://github.com/w3c/pheme
+[Midgard]: https://github.com/w3c/midgard
+[React]: https://facebook.github.io/react/docs/getting-started.html
+[Flux]: http://facebook.github.io/flux/
+[Browserify]: http://browserify.org/
+[JSX]: https://facebook.github.io/react/docs/displaying-data.html
+[cleancss]: https://github.com/jakubpawlowicz/clean-css
+[nodemon]: https://github.com/remy/nodemon
+[ngrok]: https://ngrok.com/
+[pm2]: https://github.com/Unitech/pm2
+[Watchify]: https://github.com/substack/watchify
+[cradle]: https://github.com/flatiron/cradle
+[Winston]: http://github.com/flatiron/winston
+[normalize]: http://necolas.github.com/normalize.css/
+[ungrid]: http://chrisnager.github.io/ungrid/
+[Redux]: http://rackt.github.io/redux/
