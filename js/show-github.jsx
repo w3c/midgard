@@ -77,6 +77,7 @@ export default class ShowGitHub extends React.Component {
         else if (type === "pull_request") link = p.pull_request.html_url;
         else if (type === "push") link = p.compare;
         else if (type === "fork") link = p.forkee.html_url;
+        else if (type === "gollum") link = p.pages[0].html_url;
 
         // some types have actual content payloads
         if (st.loading) content = <Spinner/>;
@@ -183,6 +184,25 @@ export default class ShowGitHub extends React.Component {
                     </p>
             ;
             style.background = background("repo-forked");
+        }
+        else if (type === "gollum") {
+            intro = <p>
+                      <span className="gh-user">@{p.sender}</span> <em>changed</em> wiki pages in repository
+                      {" "}
+                      <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a>.
+                    </p>
+            ;
+            content = <ul className='wiki-list'>
+                        {
+                            p.pages.map((w) => {
+                                let short_sha = w.sha.substr(0, 7);
+                                return <li key={short_sha}><a href={w.html_url} target="_blank">{w.title}</a> ({w.action})</li>;
+                            })
+                        }
+                    </ul>
+            ;
+
+            style.background = background("repo-wiki");
         }
         else {
             intro = <p>Unknown GH event type</p>;
