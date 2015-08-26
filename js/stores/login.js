@@ -9,6 +9,7 @@ require("isomorphic-fetch");
 let utils = require("../utils")
 ,   _user = null
 ,   _loggedIn = null
+,   _lastLoginFailed = false
 ,   apiUser = utils.endpoint("api/user")
 ,   LoginStore = module.exports = assign({}, EventEmitter.prototype, {
         emitChange: function () { this.emit("change"); }
@@ -20,6 +21,9 @@ let utils = require("../utils")
         }
     ,   isLoggedIn: function () {
             return _loggedIn;
+        }
+    ,   lastLoginFailed: function () {
+            return _lastLoginFailed;
         }
     })
 ;
@@ -43,10 +47,12 @@ LoginStore.dispatchToken = DashboardDispatch.register((action) => {
                     if (data.username) {
                         _loggedIn = true;
                         _user = data;
+                        _lastLoginFailed = false;
                     }
                     else {
                         _loggedIn = false;
                         _user = null;
+                        _lastLoginFailed = true;
                     }
                     LoginStore.emitChange();
                 })
@@ -79,6 +85,7 @@ LoginStore.dispatchToken = DashboardDispatch.register((action) => {
                 .then(() => {
                     _loggedIn = false;
                     _user = null;
+                    _lastLoginFailed = false;
                     LoginStore.emitChange();
                 })
                 .catch(utils.catchHandler);

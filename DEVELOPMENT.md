@@ -381,8 +381,8 @@ rendering.
 
 This application uses actions and stores relatively extensively but data management could probably
 be refactored some to make it a little bit clearer. One promising approach being developed is
-[Redux][Redux]; its ideas would seem to match this type of application really well, but I estimated
-that it was still too early days to apply that.
+Redux; its ideas would seem to match this type of application really well, but I estimated that it
+was still too early days to apply that.
 
 #### `actions/messages.js` and `actions/user.js`
 
@@ -394,12 +394,12 @@ The `messages.js` action module supports `error()` and `success()` messages, and
 given message.
 
 The `user.js` action module supports `login()` and `logout()` actions corresponding to what the user
-does, it can `loadUser()` to get the user's information (after login has completed), and can 
+does, it can `loadUser()` to get the user's information (after login has completed), and can
 manipulate the filters that the user has configured using `addFilter()` and `removeFilter()`.
 
 #### `stores/login.js` and `stores/message.js`
 
-The `login` store keeps information about whether the user is logged in, what their information is, 
+The `login` store keeps information about whether the user is logged in, what their information is,
 and handles the logging out when requested. The `message` store keeps a list of error and success
 messages that haven't been dismissed.
 
@@ -412,7 +412,7 @@ initiate polling for updates to mailbox filters.
 
 #### `store/mailbox.js`, `store/last-seen.js`, `store/configuration.js`, and `store/filter.js`
 
-The configuration store just lists the filters available on the server. If the server's list 
+The configuration store just lists the filters available on the server. If the server's list
 changes, the application currently needs to be reloaded. This could be changed (but it's not a very
 frequent situation).
 
@@ -434,7 +434,7 @@ of those dates. The date structure is an array that is basically (where `d` is a
 
 The reason for this unusual structure (apart from the fact that JSON doesn't do dates) is that it is
 the same structure used as key for the event views in CouchDB. The advantage is that it allows for
-other queries, for instance `[2015, 3, 15]` will match everything on March 15, 2015 irrespective of 
+other queries, for instance `[2015, 3, 15]` will match everything on March 15, 2015 irrespective of
 the rest.
 
 By default last-seen polls every minute. This could be made configurable.
@@ -463,7 +463,7 @@ clicked it dispatches a `logout` action.
 
 #### `toolbar.jsx`
 
-A simple component that lists the actions available from the toolbar, and handles toggling the 
+A simple component that lists the actions available from the toolbar, and handles toggling the
 visibility of the setting.
 
 #### `filter-toggle.jsx`
@@ -486,7 +486,7 @@ of filters. It also knows how to render the unread count.
 
 The list of events for the selected mailbox. It simply tracks changes to the currently selected
 mailbox and fetches the events that match it. It will use different rendering for different types of
-events. RSS rendering is built-in (though it could be farmed out); GitHub rendering is complex 
+events. RSS rendering is built-in (though it could be farmed out); GitHub rendering is complex
 enough to justify its own component.
 
 #### `show-github.jsx`
@@ -511,7 +511,7 @@ The Flux usage was grown rather than architected. It could use a bit of fine-tun
 application has taken shape. Also, it's worth looking at Redux.
 
 The components and much of the style can probably be extracted so that that can be reused in other
-W3C applications (see what's similar with Ash-Nazg, noting that the component may have been 
+W3C applications (see what's similar with Ash-Nazg, noting that the component may have been
 tweaked between the two).
 
 [CouchDB]: http://couchdb.apache.org/
@@ -531,4 +531,3 @@ tweaked between the two).
 [Winston]: http://github.com/flatiron/winston
 [normalize]: http://necolas.github.com/normalize.css/
 [ungrid]: http://chrisnager.github.io/ungrid/
-[Redux]: http://rackt.github.io/redux/

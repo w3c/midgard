@@ -26,8 +26,7 @@ export default class Login extends React.Component {
         LoginStore.removeChangeListener(this._onChange.bind(this));
     }
     _onChange () {
-        // if we have a change and we're not logged in, it was an error
-        if (!LoginStore.isLoggedIn()) {
+        if (LoginStore.lastLoginFailed()) {
             MessageActions.error("Login failed.", { mode: "dom" });
             this.setState({ loading: false });
         }
