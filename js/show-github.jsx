@@ -48,8 +48,7 @@ export default class ShowGitHub extends React.Component {
         ;
         if (type === "push") return null;
         if (type === "issues") return p.issue.url;
-        if (type === "issue_comment") return p.comment.url; // this includes pull request comments
-        if (type === "pull_request_review_comment") return p.comment.url;
+        if (type === "issue_comment" || type === "pull_request_review_comment" || type === "commit_comment") return p.comment.url; // this includes pull request comments
         else return null;
     }
 
@@ -73,7 +72,7 @@ export default class ShowGitHub extends React.Component {
 
         // pick the link
         if (type === "issues") link = p.issue.html_url;
-        else if (type === "issue_comment" || type === "pull_request_review_comment") link = p.comment.html_url;
+        else if (type === "issue_comment" || type === "pull_request_review_comment" || type === "commit_comment") link = p.comment.html_url;
         else if (type === "pull_request") link = p.pull_request.html_url;
         else if (type === "push") link = p.compare;
         else if (type === "fork") link = p.forkee.html_url;
@@ -130,6 +129,15 @@ export default class ShowGitHub extends React.Component {
             ;
             style.background = background("comment");
         }
+        else if (type === "commit_comment") {
+            intro = <p>
+                      <span className="gh-user">@{p.sender}</span> commented on commit
+                      {" "}
+                      <a href={p.comment.html_url} target="_blank">{p.repository} {p.comment.commit_id.substr(0, 7)}</a> on file <code>{p.comment.path}</code>
+                    </p>
+            ;
+            style.background = background("comment");
+        }        
         else if (type === "pull_request") {
             intro = <p>
                       <span className="gh-user">@{p.sender}</span> <em>{p.action}</em> pull request
