@@ -86,7 +86,7 @@ export default class ShowGitHub extends React.Component {
         // here we need to actually switch on events
         if (type === "issues") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> <em>{p.action}</em> issue
+                      <GithubUser name={p.sender} /> <em>{p.action}</em> issue
                       {" "}
                       <a href={p.issue.html_url} target="_blank">{p.repository}#{p.issue.number}</a>
                       {" "}
@@ -107,7 +107,7 @@ export default class ShowGitHub extends React.Component {
         else if (type === "issue_comment") {
             // XXX there may be other actions than "created"
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> commented on issue
+                      <GithubUser name={p.sender} /> commented on issue
                       {" "}
                       <a href={p.issue.html_url} target="_blank">{p.repository}#{p.issue}</a>.
                     </p>
@@ -116,7 +116,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "pull_request_review_comment") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> commented on pull request
+                      <GithubUser name={p.sender} /> commented on pull request
                       {" "}
                       <a href={p.comment.html_url} target="_blank">{p.repository}#{p.pull_request.number}</a>
                       {" "}
@@ -132,7 +132,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "pull_request") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> <em>{p.action}</em> pull request
+                      <GithubUser name={p.sender} /> <em>{p.action}</em> pull request
                       {" "}
                       <a href={p.pull_request.html_url} target="_blank">{p.repository}#{p.pull_request.number}</a>
                       {" "}
@@ -149,7 +149,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "push") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> <em>pushed</em> to
+                      <GithubUser name={p.sender} /> <em>pushed</em> to
                       {" "}
                       <a href={p.compare} target="_blank">{p.repository}#{p.ref.replace("refs/heads/", "")}</a>.
                     </p>
@@ -167,7 +167,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "create") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> <em>created</em> a {p.ref_type} named <a href={"https://github.com/" + p.repository + "/tree/" + p.ref} target="_blank">{p.ref}</a> on repository
+                      <GithubUser name={p.sender} /> <em>created</em> a {p.ref_type} named <a href={"https://github.com/" + p.repository + "/tree/" + p.ref} target="_blank">{p.ref}</a> on repository
                       {" "}
                       <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a>.
                     </p>
@@ -176,7 +176,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "fork") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> <em>forked</em> repository
+                      <GithubUser name={p.sender} /> <em>forked</em> repository
                       {" "}
                       <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a> to
                       {" "}
@@ -187,7 +187,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "gollum") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> <em>changed</em> wiki pages in repository
+                      <GithubUser name={p.sender} /> <em>changed</em> wiki pages in repository
                       {" "}
                       <a href={"https://github.com/" + p.repository} target="_blank">{p.repository}</a>.
                     </p>
@@ -223,5 +223,12 @@ export default class ShowGitHub extends React.Component {
                         {content}
                     </div>
         </div>;
+    }
+}
+
+class GithubUser extends React.Component {
+    render () {
+        let props = this.props;
+        return <a href={'https://github.com/' + props.name} className="gh-user">@{props.name}</a>;
     }
 }
