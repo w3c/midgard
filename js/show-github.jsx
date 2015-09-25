@@ -47,7 +47,7 @@ export default class ShowGitHub extends React.Component {
         ,   p = this.props.payload
         ;
         if (type === "push") return null;
-        if (type === "issues") return p.issue.url;
+        if (type === "issues" && (p.action === "opened" || p.action === "reopened")) return p.issue.url;
         if (type === "issue_comment" || type === "pull_request_review_comment" || type === "commit_comment") return p.comment.url; // this includes pull request comments
         else return null;
     }
@@ -84,15 +84,30 @@ export default class ShowGitHub extends React.Component {
 
         // here we need to actually switch on events
         if (type === "issues") {
+            let target = "";
+            switch (p.action) {
+              case "assigned":
+                target = <span>{" to " } <GithubUser name={p.assignee.login}/></span>
+                break;
+              case "unassigned":
+                target = <span>{" from " } <GithubUser name={p.assignee.login}/></span>
+                break;
+              case "labeled":
+              case "unlabeled":
+                target = <span>{" as " } <span className="label">"{p.label.name}"</span></span>
+              break;
+            }
             intro = <p>
                       <GithubUser name={p.sender} /> <em>{p.action}</em> issue
                       {" "}
                       <a href={p.issue.html_url} target="_blank">{p.repository}#{p.issue.number}</a>
                       {" "}
-                      <span className="issue-title">“{p.issue.title}”</span>.
+                      <span className="issue-title">“{p.issue.title}”</span>
+                      {target}.
+                      {" "}
                       {
                           p.label ?
-                                <span className="label" style={{ background: p.label.color }}>{p.label.name}</span> :
+                                 <span className="label" style={{ background: "#" + p.label.color }}>{p.label.name}</span> :
                                 ""
                       }
             </p>
