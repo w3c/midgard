@@ -109,7 +109,7 @@ export default class ShowGitHub extends React.Component {
             intro = <p>
                       <span className="gh-user">@{p.sender}</span> commented on issue
                       {" "}
-                      <a href={p.issue.html_url} target="_blank">{p.repository}#{p.issue}</a>.
+                      <a href={'https://github.com/' + p.repository + '/issues/' + p.issue} target="_blank">{p.repository}#{p.issue}</a>.
                     </p>
             ;
             style.background = background("comment");
