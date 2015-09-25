@@ -338,3 +338,10 @@ td.good, td.bad {
 .message .content blockquote {
     font-style: italic;
 }
+
+.message .label {
+    padding: 2px 4px;
+    border-radius: 2px;
+    box-shadow: 0 -1px 0 rgba(0,0,0, 0.12) inset;
+    box-sizing: border-box;
+}
