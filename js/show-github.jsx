@@ -84,12 +84,26 @@ export default class ShowGitHub extends React.Component {
 
         // here we need to actually switch on events
         if (type === "issues") {
+            let target = "";
+            switch (p.action) {
+              case "assigned":
+                target = <span>{" to " } <span className="gh-user">@{p.assignee.login}</span></span>
+                break;
+              case "unassigned":
+                target = <span>{" from " } <span className="gh-user">@{p.assignee.login}</span></span>
+                break;
+              case "labeled":
+              case "unlabeled":
+                target = <span>{" as " } <span className="label">"{p.label.name}"</span></span>
+              break;
+            }
             intro = <p>
                       <GithubUser name={p.sender} /> <em>{p.action}</em> issue
                       {" "}
                       <a href={p.issue.html_url} target="_blank">{p.repository}#{p.issue.number}</a>
                       {" "}
-                      <span className="issue-title">“{p.issue.title}”</span>.
+                      <span className="issue-title">“{p.issue.title}”</span>
+                      {target}.
                       {" "}
                       {
                           p.label ?
