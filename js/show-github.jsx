@@ -90,9 +90,10 @@ export default class ShowGitHub extends React.Component {
                       <a href={p.issue.html_url} target="_blank">{p.repository}#{p.issue.number}</a>
                       {" "}
                       <span className="issue-title">“{p.issue.title}”</span>.
+                      {" "}
                       {
                           p.label ?
-                                <span className="label" style={{ background: p.label.color }}>{p.label.name}</span> :
+                                 <span className="label" style={{ background: "#" + p.label.color }}>{p.label.name}</span> :
                                 ""
                       }
             </p>
