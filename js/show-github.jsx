@@ -87,10 +87,10 @@ export default class ShowGitHub extends React.Component {
             let target = "";
             switch (p.action) {
               case "assigned":
-                target = <span>{" to " } <span className="gh-user">@{p.assignee.login}</span></span>
+                target = <span>{" to " } <GithubUser name={p.assignee.login}/></span>
                 break;
               case "unassigned":
-                target = <span>{" from " } <span className="gh-user">@{p.assignee.login}</span></span>
+                target = <span>{" from " } <GithubUser name={p.assignee.login}/></span>
                 break;
               case "labeled":
               case "unlabeled":
