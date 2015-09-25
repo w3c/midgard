@@ -250,8 +250,35 @@ export default class ShowGitHub extends React.Component {
 }
 
 class GithubUser extends React.Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            avatar:       null
+        ,   fullname:    props.name
+        };
+    }
+
+    componentWillMount () {
+        let comp = this;
+        fetch(  "https://api.github.com/users/" + this.props.name
+            ,   {
+                    mode:       "cors"
+                ,   headers:    { "Accept": "application/vnd.github.v3.html+json" }
+                }
+            )
+            .then(utils.jsonHandler)
+            .then((data) => {
+                comp.setState({
+                    fullname:   data.name
+                ,   avatar:    data.avatar_url + "&s=48"
+                });
+            })
+            .catch(utils.catchHandler);
+    }
+
+
     render () {
         let props = this.props;
-        return <a href={'https://github.com/' + props.name} className="gh-user">@{props.name}</a>;
+        return <a href={'https://github.com/' + props.name} className="gh-user" title={this.state.fullname}><img src={this.state.avatar} width="24" height="24" alt=''/> @{props.name}</a>;
     }
 }
