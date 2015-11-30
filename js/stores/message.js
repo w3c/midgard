@@ -21,12 +21,17 @@ MessageStore.dispatchToken = DashboardDispatch.register((action) => {
         case "error":
         case "success":
             let msg = typeof action.message === "string" ? action.message : action.message.message;
-            _messages.push({
-                id:         ++_counter
-            ,   message:    msg
-            ,   type:       action.type
-            ,   mode:       action.mode
-            });
+            if (_messages.length > 0 && _messages[_messages.length - 1].message === msg) {
+                _messages[_messages.length - 1].repeat++;
+            } else {
+                _messages.push({
+                    id:         ++_counter
+                ,   message:    msg
+                ,   type:       action.type
+                ,   mode:       action.mode
+                ,   repeat:     0
+                });
+            }
             MessageStore.emitChange();
             break;
         case "dismiss":
