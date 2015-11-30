@@ -148,7 +148,7 @@ export default class ShowGitHub extends React.Component {
         }
         else if (type === "commit_comment") {
             intro = <p>
-                      <span className="gh-user">@{p.sender}</span> commented on commit
+                      <GithubUser name={p.sender} /> commented on commit
                       {" "}
                       <a href={p.comment.html_url} target="_blank">{p.repository} {p.comment.commit_id.substr(0, 7)}</a> on file <code>{p.comment.path}</code>
                     </p>
