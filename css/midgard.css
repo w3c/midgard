@@ -182,6 +182,13 @@ button:disabled {
 .flash-error button {
     background: #df5d5d;
 }
+.flash-list p .repeat {
+    border-radius:5px;
+    color: white;
+    background-color: #F1647C;
+    padding-left: 5px;
+    padding-right: 5px;
+}
 .good {
     color:  green;
 }

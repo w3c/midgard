@@ -37,7 +37,10 @@ export default class FlashList extends React.Component {
                                 return  <div className={"flash-" + msg.type} key={msg.id}>
                                             <button onClick={function () { this.dismiss(msg.id); }.bind(this)}>╳</button>
                                             <p>
-                                                {msg.message}
+                                                {msg.message + " "}
+                                                {
+                                                   msg.repeat > 0 ? <span className="repeat" title={"Message repeated " + (msg.repeat + 1) + " times"}>x{msg.repeat + 1}</span> : ""
+                                                }
                                             </p>
                                             {
                                                 msg.mode === "dom" ?
