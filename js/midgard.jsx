@@ -4,6 +4,8 @@ import React from "react";
 import { Router, Route } from "react-router";
 import BrowserHistory from "react-router/lib/BrowserHistory";
 
+import Favicon from "react-favicon";
+
 import Application from "../components/application.jsx";
 import Row from "../components/row.jsx";
 import Col from "../components/col.jsx";
@@ -25,6 +27,7 @@ import ConfigurationActions from "./actions/configuration";
 import ConfigurationStore from "./stores/configuration";
 
 import LastSeenActions from "./actions/last-seen";
+import LastSeenStore from "./stores/last-seen";
 
 
 let utils = require("./utils")
@@ -35,6 +38,7 @@ function getState () {
     var st = {
         loggedIn: LoginStore.isLoggedIn()
     ,   allFilters: ConfigurationStore.getFilters()
+    ,   unreadCount: (Object.keys(ConfigurationStore.getFilters() || {})).map(LastSeenStore.getFilterCount).reduce((a,b) => a+b, 0)
     };
     if (st.loggedIn === null || st.allFilters === null) st.status = "loading";
     else if (st.loggedIn) st.status = "ok";
@@ -50,6 +54,7 @@ class W3CDashboard extends React.Component {
     componentDidMount () {
         LoginStore.addChangeListener(this._onChange.bind(this));
         ConfigurationStore.addChangeListener(this._onChange.bind(this));
+        LastSeenStore.addChangeListener(this._onChange.bind(this));
         UserActions.loadUser();
         ConfigurationActions.loadConfiguration();
         LastSeenActions.startWatching();
@@ -57,6 +62,7 @@ class W3CDashboard extends React.Component {
     componentWillUnmount () {
         LoginStore.removeChangeListener(this._onChange.bind(this));
         ConfigurationStore.removeChangeListener(this._onChange.bind(this));
+        LastSeenStore.removeChangeListener(this._onChange.bind(this));
     }
     _onChange () {
         this.setState(getState());
@@ -66,7 +72,11 @@ class W3CDashboard extends React.Component {
         let st = this.state
         ,   toolbar
         ,   body
+        ,   favicon = <Favicon url="img/favicon.png" />
         ;
+        if (st.unreadCount > 0) {
+            favicon = <Favicon url="img/favicon-updates.png"/>
+        }
         if (st.status === "loading") {
             body = <Spinner prefix={pp}/>;
         }
@@ -82,6 +92,7 @@ class W3CDashboard extends React.Component {
             ;
         }
         return <Application title="W3C Dashboard">
+                  {favicon}
                   {toolbar}
                   <FlashList store={MessageStore} actions={MessageActions}/>
                   {body}

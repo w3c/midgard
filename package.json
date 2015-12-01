@@ -15,6 +15,7 @@
     "normalize.css": "^3.0.3",
     "object-assign": "^3.0.0",
     "react": "^0.13.3",
+    "react-favicon": "0.0.3",
     "react-router": "1.0.0-beta2",
     "uglifyjs": "^2.4.10",
     "ungrid": "^1.0.1",
