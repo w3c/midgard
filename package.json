@@ -29,7 +29,7 @@
     ]
   },
   "scripts": {
-    "build-js-debug": "browserify app.jsx --debug | exorcist js/midgard.js.map > js/midgard.js",
+    "build-js-debug": "browserify js/midgard.jsx --debug | exorcist js/midgard.js.map > js/midgard.js",
     "build-js": "browserify js/midgard.jsx | uglifyjs - -c warnings=false -m > js/midgard.min.js",
     "watch-js": "watchify js/midgard.jsx --verbose --ignore-watch=\"**/node_modules/**\" --ignore-watch=\"**/js/midgard.min.js\" -o 'uglifyjs - -c warnings=false -m > js/midgard.min.js'",
     "build-css": "cleancss -o ./css/midgard.min.css ./css/midgard.css",
