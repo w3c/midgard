@@ -1,6 +1,6 @@
-config.json
 config.js
+config.json
+css/*.min.js
+js/*.min.js
 node_modules/
 npm-debug.log
-js/*.min.js
-css/*.min.js
