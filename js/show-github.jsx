@@ -96,7 +96,7 @@ export default class ShowGitHub extends React.Component {
                 break;
               case "labeled":
               case "unlabeled":
-                target = <span>{" as " } <span className="label">"{p.label.name}"</span></span>
+                target = p.label ? <span>{" as " } <span className="label">"{p.label.name}"</span></span> : "";
               break;
             }
             intro = <p>
