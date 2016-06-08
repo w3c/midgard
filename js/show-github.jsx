@@ -173,13 +173,22 @@ export default class ShowGitHub extends React.Component {
             else style.background = background("git-pull-request");
         }
         else if (type === "push") {
-            intro = <p>
+            if (p.deleted) {
+                intro = <p>
+                      <GithubUser name={p.sender} /> <em>deleted</em> branch
+                      {" "}
+                      <a href={p.compare} target="_blank">{p.repository}#{p.ref.replace("refs/heads/", "")}</a>.
+                    </p>
+                    ;
+
+            } else {
+                intro = <p>
                       <GithubUser name={p.sender} /> <em>pushed</em> to
                       {" "}
                       <a href={p.compare} target="_blank">{p.repository}#{p.ref.replace("refs/heads/", "")}</a>.
                     </p>
-            ;
-            content = <ul className='commits-list'>
+                    ;
+                content = <ul className='commits-list'>
                         {
                             p.commits.map((c) => {
                                 let short_sha = c.id.substr(0, 7);
@@ -187,7 +196,8 @@ export default class ShowGitHub extends React.Component {
                             })
                         }
                     </ul>
-            ;
+                    ;
+            }
             style.background = background("repo-push");
         }
         else if (type === "create") {
