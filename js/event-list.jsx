@@ -69,9 +69,10 @@ export default class EventList extends React.Component {
 
     render () {
         let st = this.state;
-        if (st.loading) return <div className="messages"><Spinner/></div>;
-        if (!st.events.length) return <div className="messages"><p>No events.</p></div>;
-        return <div className="messages">
+        let spinner = "";
+        if (!st.loading && !st.events.length) return <div className="messages"><p>No events.</p></div>;
+        if (st.loading) spinner = <div className="messages"><Spinner/></div>;
+        return <div className="messages">{spinner}
             {
                 st.events.map((ev) => {
                         {
