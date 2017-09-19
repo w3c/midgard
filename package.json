@@ -22,7 +22,8 @@
     "watchify": "^3.3.1"
   },
   "dependencies": {
-    "octicons": "^2.2.0"
+    "octicons": "^2.2.0",
+    "react-document-title": "^2.0.3"
   },
   "browserify": {
     "transform": [

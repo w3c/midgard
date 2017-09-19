@@ -73,6 +73,7 @@ class W3CDashboard extends React.Component {
         ,   toolbar
         ,   body
         ,   favicon = <Favicon url="img/favicon.png" />
+        ,   title = "W3C Dashboard" + (st.unreadCount ? ` (${st.unreadCount})` : '');
         ;
         if (st.unreadCount > 0) {
             favicon = <Favicon url="img/favicon-updates.png"/>
@@ -91,7 +92,7 @@ class W3CDashboard extends React.Component {
                 </Row>
             ;
         }
-        return <Application title="W3C Dashboard">
+        return <Application title={title}>
                   {favicon}
                   {toolbar}
                   <FlashList store={MessageStore} actions={MessageActions}/>
