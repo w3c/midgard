@@ -2,3 +2,5 @@ config.json
 config.js
 node_modules/
 npm-debug.log
+js/*.min.js
+css/*.min.js
