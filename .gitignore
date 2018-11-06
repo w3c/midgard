@@ -1,7 +1,6 @@
 config.json
 config.js
-
-
 node_modules/
 npm-debug.log
-js/midgard.min.js
+js/*.min.js
+css/*.min.js

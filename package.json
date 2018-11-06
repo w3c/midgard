@@ -1,6 +1,6 @@
 {
   "name": "midgard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "license": "MIT",
   "devDependencies": {
@@ -17,7 +17,7 @@
     "react": "^0.13.3",
     "react-favicon": "0.0.3",
     "react-router": "1.0.0-beta2",
-    "uglifyjs": "^2.4.10",
+    "uglify-js": "^3.4.9",
     "ungrid": "^1.0.1",
     "watchify": "^3.3.1"
   },
@@ -32,8 +32,8 @@
   },
   "scripts": {
     "build-js-debug": "browserify js/midgard.jsx --debug | exorcist js/midgard.js.map > js/midgard.js",
-    "build-js": "browserify js/midgard.jsx | uglifyjs - -c warnings=false -m > js/midgard.min.js",
-    "watch-js": "watchify js/midgard.jsx --verbose --ignore-watch=\"**/node_modules/**\" --ignore-watch=\"**/js/midgard.min.js\" -o 'uglifyjs - -c warnings=false -m > js/midgard.min.js'",
+    "build-js": "browserify js/midgard.jsx | uglifyjs -c warnings=false -m > js/midgard.min.js",
+    "watch-js": "watchify js/midgard.jsx --verbose --ignore-watch=\"**/node_modules/**\" --ignore-watch=\"**/js/midgard.min.js\" -o 'uglifyjs -c warnings=false -m > js/midgard.min.js'",
     "build-css": "cleancss -o ./css/midgard.min.css ./css/midgard.css",
     "watch-css": "nodemon --watch css/midgard.css --exec 'npm run build-css'",
     "build": "npm run build-css && npm run build-js",
